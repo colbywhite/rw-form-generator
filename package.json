@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "redwood dev"
+    "start": "redwood dev",
+    "lint": "redwood lint",
+    "lint:fix": "redwood lint --fix"
   },
   "private": true,
   "workspaces": {
