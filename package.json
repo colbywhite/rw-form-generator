@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "redwood dev",
+    "build": "redwood build",
     "lint": "redwood lint",
     "lint:fix": "redwood lint --fix"
   },
