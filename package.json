@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "redwood dev",
+    "start": "redwood dev --fwd=\"--no-open\"",
+    "db:migrate": "redwood prisma migrate dev",
     "build": "redwood build",
     "lint": "redwood lint",
     "lint:fix": "redwood lint --fix"
