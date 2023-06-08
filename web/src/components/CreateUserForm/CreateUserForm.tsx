@@ -1,6 +1,7 @@
 import { CreateUserMutation, CreateUserMutationVariables } from 'types/graphql'
 
 import {
+  FieldError,
   Form,
   FormError,
   Submit,
@@ -24,6 +25,9 @@ const CREATE_USER_EXAMPLE = gql`
 `
 type FormValues = { name: string; email: string }
 
+const INPUT_CLASSES = 'input-bordered input-secondary input w-full max-w-xs'
+const INPUT_ERROR_CLASSES = INPUT_CLASSES + ' input-error'
+
 const CreateUserForm = () => {
   const [create, { loading, error }] = useMutation<
     CreateUserMutation,
@@ -45,14 +49,29 @@ const CreateUserForm = () => {
       error={error}
       formMethods={formMethods}
     >
-      <FormError error={error} wrapperClassName="form-error" />
+      <FormError
+        error={error}
+        wrapperClassName="border border-error-content bg-error text-sm italic text-error-content p-2 rounded"
+      />
       <div className="form-control">
         <label htmlFor="email" className="label">
           <span className="label-text">Email</span>
         </label>
         <TextField
           name="email"
-          className="input-bordered input-secondary input w-full max-w-xs"
+          validation={{
+            required: true,
+            pattern: {
+              value: /^[^@]+@[^.]+\..+$/,
+              message: 'Please enter a valid email address',
+            },
+          }}
+          className={INPUT_CLASSES}
+          errorClassName={INPUT_ERROR_CLASSES}
+        />
+        <FieldError
+          name="email"
+          className="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
         />
       </div>
       <div className="form-control">
@@ -62,6 +81,10 @@ const CreateUserForm = () => {
         <TextField
           name="name"
           className="input-bordered input-secondary input w-full max-w-xs"
+        />
+        <FieldError
+          name="name"
+          className="my-1 rounded bg-error p-1 text-sm italic text-error-content"
         />
       </div>
       <div className="form-control mt-4">
