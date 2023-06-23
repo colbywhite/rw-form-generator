@@ -7,6 +7,7 @@ import {
   Submit,
   SubmitHandler,
   TextField,
+  EmailField,
   useForm,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
@@ -57,7 +58,7 @@ const CreateUserForm = () => {
         <label htmlFor="email" className="label">
           <span className="label-text">Email</span>
         </label>
-        <TextField
+        <EmailField
           name="email"
           validation={{
             required: true,
