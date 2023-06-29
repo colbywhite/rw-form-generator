@@ -1,19 +1,21 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { CreateUserMutation, CreateUserMutationVariables } from 'types/graphql'
 
 import {
+  EmailField,
   FieldError,
   Form,
   FormError,
   Submit,
   SubmitHandler,
   TextField,
-  EmailField,
   useForm,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY as UsersQuery } from 'src/components/UsersCell'
+import { CreateUserSchema } from 'src/schemas'
 
 const CREATE_USER_EXAMPLE = gql`
   mutation CreateUserMutation($input: CreateUserInput!) {
@@ -40,7 +42,10 @@ const CreateUserForm = () => {
     },
     refetchQueries: [{ query: UsersQuery }],
   })
-  const formMethods = useForm({ mode: 'onBlur' })
+  const formMethods = useForm({
+    mode: 'onBlur',
+    resolver: zodResolver(CreateUserSchema),
+  })
   const onSubmit: SubmitHandler<FormValues> = (data) =>
     create({ variables: { input: data } })
   return (
@@ -60,13 +65,6 @@ const CreateUserForm = () => {
         </label>
         <EmailField
           name="email"
-          validation={{
-            required: true,
-            pattern: {
-              value: /^[^@]+@[^.]+\..+$/,
-              message: 'Please enter a valid email address',
-            },
-          }}
           className={INPUT_CLASSES}
           errorClassName={INPUT_ERROR_CLASSES}
         />

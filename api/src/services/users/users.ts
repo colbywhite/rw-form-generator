@@ -1,8 +1,9 @@
-import type { QueryResolvers, MutationResolvers } from 'types/graphql'
+import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 
-import { validate } from '@redwoodjs/api'
+import { EmailValidationError } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
+import { CreateUserSchema } from 'src/schemas'
 
 export const users: QueryResolvers['users'] = () => {
   return db.user.findMany()
@@ -15,7 +16,12 @@ export const user: QueryResolvers['user'] = ({ id }) => {
 }
 
 export const createUser: MutationResolvers['createUser'] = ({ input }) => {
-  validate(input.email, 'email', { email: true })
+  const result = CreateUserSchema.safeParse(input)
+  if (result.success === false) {
+    const issue = result.error.issues[0]
+    // TODO choose error class based on issue path
+    throw new EmailValidationError(String(issue.path[0]), issue.message)
+  }
   return db.user.create({
     data: input,
   })

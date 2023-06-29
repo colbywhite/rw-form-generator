@@ -3313,6 +3313,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@hookform/resolvers@npm:3.1.1"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 340e2163247febd3941971984031979bad599ff3728eec63fadc522a8f54e56a593891ea70bb8a3ff40fa024ed9d1c71d485a66997b719fe45526f9399faeaf6
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.10":
   version: 0.11.10
   resolution: "@humanwhocodes/config-array@npm:0.11.10"
@@ -21360,6 +21369,7 @@ __metadata:
   dependencies:
     "@redwoodjs/core": 5.3.0
     prettier-plugin-tailwindcss: ^0.3.0
+    zod: ^3.21.4
   languageName: unknown
   linkType: soft
 
@@ -24431,6 +24441,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@hookform/resolvers": ^3.1.1
     "@redwoodjs/forms": 5.3.0
     "@redwoodjs/router": 5.3.0
     "@redwoodjs/web": 5.3.0
@@ -25297,6 +25308,13 @@ __metadata:
     compress-commons: ^4.1.0
     readable-stream: ^3.6.0
   checksum: ed9eb9387953576c43bdf7678705e8b0ff4e9149cf92b39fa845ddd5413b08daf68655b1ee8311e2dd7c88ddeb95908a785e8e48473016b2595870b0adf588d4
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.21.4":
+  version: 3.21.4
+  resolution: "zod@npm:3.21.4"
+  checksum: 161e8cf7aea38a99244d65da4a9477d9d966f6a533e503feaa20ff7968a9691065c38c6f1eab5cbbdc8374142fff4a05c9cacb8479803ab50ab6a6ca80e5d624
   languageName: node
   linkType: hard
 
