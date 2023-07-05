@@ -24,6 +24,9 @@ type AutoFormSpecificProps<
 > = {
   schema: ZodObject<T, UnknownKeys, Catchall, Output, Input>
   resetOnSuccess?: boolean
+  fieldClassName?: string
+  additionalFieldErrorClass?: string
+  fieldErrorClassName?: string
 }
 
 export type AutoFormProps<
@@ -47,6 +50,9 @@ const AutoForm = <
   schema,
   onSubmit,
   resetOnSuccess = true,
+  fieldErrorClassName,
+  additionalFieldErrorClass,
+  fieldClassName,
   children,
   ...formProps
 }: AutoFormProps<T, UnknownKeys, Catchall, Output, Input>) => {
@@ -65,7 +71,14 @@ const AutoForm = <
   return (
     <Form onSubmit={fullOnSubmit} formMethods={formMethods} {...formProps}>
       {Object.keys(schema.shape).map((key) => (
-        <AutoField key={key} type={schema.shape[key]} name={key} />
+        <AutoField
+          key={key}
+          type={schema.shape[key]}
+          name={key}
+          className={fieldClassName}
+          additionalErrorClass={additionalFieldErrorClass}
+          fieldErrorClassName={fieldErrorClassName}
+        />
       ))}
       {children}
     </Form>

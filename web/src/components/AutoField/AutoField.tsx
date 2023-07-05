@@ -7,9 +7,6 @@ import type {
 
 import { EmailField, FieldError, TextField } from '@redwoodjs/forms'
 
-const INPUT_CLASSES = 'input-bordered input-secondary input w-full max-w-xs'
-const INPUT_ERROR_CLASSES = INPUT_CLASSES + ' input-error'
-
 function getInputComponentFromZodType(
   type: ZodFirstPartyTypeKind,
   checks: ZodStringCheck[] = []
@@ -25,10 +22,16 @@ const AutoField = <T extends ZodTypeAny>({
   type,
   name,
   label,
+  className,
+  additionalErrorClass,
+  fieldErrorClassName,
 }: {
   type: T
   name: string
   label?: string
+  className?: string
+  additionalErrorClass?: string
+  fieldErrorClassName?: string
 }) => {
   // TODO is there a better way to type this?
   const { typeName, checks } = type._def
@@ -43,13 +46,14 @@ const AutoField = <T extends ZodTypeAny>({
       </label>
       <InputComponent
         name={name}
-        className={INPUT_CLASSES}
-        errorClassName={INPUT_ERROR_CLASSES}
+        className={className}
+        errorClassName={
+          className
+            ? `${className} ${additionalErrorClass}`
+            : additionalErrorClass
+        }
       />
-      <FieldError
-        name={name}
-        className="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
-      />
+      <FieldError name={name} className={fieldErrorClassName} />
     </div>
   )
 }
