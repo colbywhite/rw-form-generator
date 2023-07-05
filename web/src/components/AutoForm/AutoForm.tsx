@@ -10,7 +10,7 @@ import type {
   ZodTypeAny,
 } from 'zod/lib/types'
 
-import type { SubmitHandler } from '@redwoodjs/forms'
+import type { FormProps, SubmitHandler } from '@redwoodjs/forms'
 import { Form, useForm } from '@redwoodjs/forms'
 
 import AutoField from 'src/components/AutoField/AutoField'
@@ -23,8 +23,6 @@ type AutoFormSpecificProps<
   Input = objectInputType<T, Catchall, UnknownKeys>
 > = {
   schema: ZodObject<T, UnknownKeys, Catchall, Output, Input>
-  onSubmit?: SubmitHandler<Output>
-  error?: unknown
   resetOnSuccess?: boolean
 }
 
@@ -34,9 +32,10 @@ export type AutoFormProps<
   Catchall extends ZodTypeAny = ZodTypeAny,
   Output = objectOutputType<T, Catchall, UnknownKeys>,
   Input = objectInputType<T, Catchall, UnknownKeys>
-> = PropsWithChildren<
-  AutoFormSpecificProps<T, UnknownKeys, Catchall, Output, Input>
->
+> = Omit<FormProps<Output>, 'formMethods' | 'config'> &
+  PropsWithChildren<
+    AutoFormSpecificProps<T, UnknownKeys, Catchall, Output, Input>
+  >
 
 const AutoForm = <
   T extends ZodRawShape,
@@ -47,9 +46,9 @@ const AutoForm = <
 >({
   schema,
   onSubmit,
-  error,
   resetOnSuccess = true,
   children,
+  ...formProps
 }: AutoFormProps<T, UnknownKeys, Catchall, Output, Input>) => {
   const formMethods = useForm({
     mode: 'onBlur',
@@ -64,12 +63,7 @@ const AutoForm = <
   }
 
   return (
-    <Form
-      className="mx-auto w-fit"
-      onSubmit={fullOnSubmit}
-      error={error}
-      formMethods={formMethods}
-    >
+    <Form onSubmit={fullOnSubmit} formMethods={formMethods} {...formProps}>
       {Object.keys(schema.shape).map((key) => (
         <AutoField key={key} type={schema.shape[key]} name={key} />
       ))}

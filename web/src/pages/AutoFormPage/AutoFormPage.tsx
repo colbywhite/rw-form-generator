@@ -43,6 +43,7 @@ const AutoFormPage = () => {
       <section className="text-center">
         <h2 className="mb-4 text-2xl">Create user</h2>
         <AutoForm
+          className="mx-auto w-fit"
           schema={CreateUserSchema}
           error={error}
           onSubmit={(result) =>
