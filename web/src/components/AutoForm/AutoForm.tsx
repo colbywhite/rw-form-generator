@@ -1,3 +1,5 @@
+import type { PropsWithChildren } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import type {
   objectInputType,
@@ -9,11 +11,11 @@ import type {
 } from 'zod/lib/types'
 
 import type { SubmitHandler } from '@redwoodjs/forms'
-import { Form, Submit, useForm } from '@redwoodjs/forms'
+import { Form, useForm } from '@redwoodjs/forms'
 
 import AutoField from 'src/components/AutoField/AutoField'
 
-export type AutoFormProps<
+type AutoFormSpecificProps<
   T extends ZodRawShape,
   UnknownKeys extends UnknownKeysParam = UnknownKeysParam,
   Catchall extends ZodTypeAny = ZodTypeAny,
@@ -23,9 +25,19 @@ export type AutoFormProps<
   schema: ZodObject<T, UnknownKeys, Catchall, Output, Input>
   onSubmit?: SubmitHandler<Output>
   error?: unknown
-  disabled?: boolean
   resetOnSuccess?: boolean
 }
+
+export type AutoFormProps<
+  T extends ZodRawShape,
+  UnknownKeys extends UnknownKeysParam = UnknownKeysParam,
+  Catchall extends ZodTypeAny = ZodTypeAny,
+  Output = objectOutputType<T, Catchall, UnknownKeys>,
+  Input = objectInputType<T, Catchall, UnknownKeys>
+> = PropsWithChildren<
+  AutoFormSpecificProps<T, UnknownKeys, Catchall, Output, Input>
+>
+
 const AutoForm = <
   T extends ZodRawShape,
   UnknownKeys extends UnknownKeysParam = UnknownKeysParam,
@@ -36,8 +48,8 @@ const AutoForm = <
   schema,
   onSubmit,
   error,
-  disabled = false,
   resetOnSuccess = true,
+  children,
 }: AutoFormProps<T, UnknownKeys, Catchall, Output, Input>) => {
   const formMethods = useForm({
     mode: 'onBlur',
@@ -61,11 +73,7 @@ const AutoForm = <
       {Object.keys(schema.shape).map((key) => (
         <AutoField key={key} type={schema.shape[key]} name={key} />
       ))}
-      <div className="form-control mt-4">
-        <Submit disabled={disabled} className="btn-primary btn">
-          Create
-        </Submit>
-      </div>
+      {children}
     </Form>
   )
 }

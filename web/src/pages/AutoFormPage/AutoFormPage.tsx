@@ -3,6 +3,7 @@ import type {
   CreateUserMutationVariables,
 } from 'types/graphql'
 
+import { Submit } from '@redwoodjs/forms'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
@@ -44,12 +45,17 @@ const AutoFormPage = () => {
         <AutoForm
           schema={CreateUserSchema}
           error={error}
-          disabled={loading}
           onSubmit={(result) =>
             // TODO why does zod not pick up that email is required in the types?
             create({ variables: { input: result as Required<typeof result> } })
           }
-        />
+        >
+          <div className="form-control mt-4">
+            <Submit disabled={loading} className="btn-primary btn">
+              Create
+            </Submit>
+          </div>
+        </AutoForm>
       </section>
 
       <section className="max-h-[60vh] overflow-auto text-center">
