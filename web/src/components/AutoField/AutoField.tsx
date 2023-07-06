@@ -26,6 +26,7 @@ const AutoField = <T extends ZodTypeAny, LabelElement extends ReactElement>({
   className,
   additionalErrorClass,
   fieldErrorClassName,
+  wrapperClassName,
 }: {
   type: T
   name: string
@@ -33,6 +34,7 @@ const AutoField = <T extends ZodTypeAny, LabelElement extends ReactElement>({
   className?: string
   additionalErrorClass?: string
   fieldErrorClassName?: string
+  wrapperClassName?: string
 }) => {
   // TODO is there a better way to type this?
   const { typeName, checks } = type._def
@@ -41,7 +43,7 @@ const AutoField = <T extends ZodTypeAny, LabelElement extends ReactElement>({
     checks as ZodStringCheck[]
   )
   return (
-    <div className="form-control">
+    <div className={wrapperClassName}>
       {label}
       <InputComponent
         name={name}

@@ -54,6 +54,7 @@ const AutoFormPage = () => {
           className="mx-auto w-fit"
           fieldClassName="input-bordered input-secondary input w-full max-w-xs"
           additionalFieldErrorClass="input-error"
+          fieldWrapperClassName="form-control"
           fieldErrorClassName="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
           schema={CreateUserSchema}
           error={error}

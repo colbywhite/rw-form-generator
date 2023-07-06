@@ -25,6 +25,7 @@ type AutoFormSpecificProps<
   schema: ZodObject<T, UnknownKeys, Catchall, Output, Input>
   resetOnSuccess?: boolean
   fieldClassName?: string
+  fieldWrapperClassName?: string
   additionalFieldErrorClass?: string
   fieldErrorClassName?: string
   label?: FC<string>
@@ -52,6 +53,7 @@ const AutoForm = <
   onSubmit,
   resetOnSuccess = true,
   fieldErrorClassName,
+  fieldWrapperClassName,
   additionalFieldErrorClass,
   fieldClassName,
   children,
@@ -78,6 +80,7 @@ const AutoForm = <
           type={schema.shape[key]}
           name={key}
           className={fieldClassName}
+          wrapperClassName={fieldWrapperClassName}
           additionalErrorClass={additionalFieldErrorClass}
           fieldErrorClassName={fieldErrorClassName}
           {...(label ? { label: label(key) } : {})}
