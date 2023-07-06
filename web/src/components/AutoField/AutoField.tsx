@@ -1,4 +1,5 @@
-import { titleCase } from 'title-case'
+import type { ReactElement } from 'react'
+
 import type {
   ZodFirstPartyTypeKind,
   ZodStringCheck,
@@ -18,7 +19,7 @@ function getInputComponentFromZodType(
   throw new Error(`zod schema of ${type} is not yet supported`)
 }
 
-const AutoField = <T extends ZodTypeAny>({
+const AutoField = <T extends ZodTypeAny, LabelElement extends ReactElement>({
   type,
   name,
   label,
@@ -28,7 +29,7 @@ const AutoField = <T extends ZodTypeAny>({
 }: {
   type: T
   name: string
-  label?: string
+  label?: LabelElement
   className?: string
   additionalErrorClass?: string
   fieldErrorClassName?: string
@@ -41,9 +42,7 @@ const AutoField = <T extends ZodTypeAny>({
   )
   return (
     <div className="form-control">
-      <label htmlFor={name} className="label">
-        <span className="label-text">{label || titleCase(name)}</span>
-      </label>
+      {label}
       <InputComponent
         name={name}
         className={className}

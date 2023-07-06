@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import type {
@@ -27,6 +27,7 @@ type AutoFormSpecificProps<
   fieldClassName?: string
   additionalFieldErrorClass?: string
   fieldErrorClassName?: string
+  label?: FC<string>
 }
 
 export type AutoFormProps<
@@ -54,6 +55,7 @@ const AutoForm = <
   additionalFieldErrorClass,
   fieldClassName,
   children,
+  label,
   ...formProps
 }: AutoFormProps<T, UnknownKeys, Catchall, Output, Input>) => {
   const formMethods = useForm({
@@ -78,6 +80,7 @@ const AutoForm = <
           className={fieldClassName}
           additionalErrorClass={additionalFieldErrorClass}
           fieldErrorClassName={fieldErrorClassName}
+          {...(label ? { label: label(key) } : {})}
         />
       ))}
       {children}

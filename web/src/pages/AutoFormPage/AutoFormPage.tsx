@@ -1,3 +1,6 @@
+import type { FC } from 'react'
+
+import { titleCase } from 'title-case'
 import type {
   CreateUserMutation,
   CreateUserMutationVariables,
@@ -29,6 +32,11 @@ const AutoFormPage = () => {
       toast.success(`${name || email} user created.`, { icon: '✅' }),
     refetchQueries: [{ query: UsersQuery }],
   })
+  const Label: FC<string> = (name) => (
+    <label htmlFor={name} className="label">
+      <span className="label-text">{titleCase(name)}</span>
+    </label>
+  )
   return (
     <main className="grid grid-cols-2 gap-8 p-2">
       <MetaTags title="Create a user" description="Create user form" />
@@ -49,6 +57,7 @@ const AutoFormPage = () => {
           fieldErrorClassName="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
           schema={CreateUserSchema}
           error={error}
+          label={Label}
           onSubmit={(result) =>
             // TODO why does zod not pick up that email is required in the types?
             create({ variables: { input: result as Required<typeof result> } })
