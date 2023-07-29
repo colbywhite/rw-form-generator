@@ -5,7 +5,8 @@
     "db:migrate": "redwood prisma migrate dev",
     "build": "redwood build",
     "lint": "redwood lint",
-    "lint:fix": "redwood lint --fix"
+    "lint:fix": "redwood lint --fix",
+    "storybook": "redwood storybook"
   },
   "private": true,
   "workspaces": {
