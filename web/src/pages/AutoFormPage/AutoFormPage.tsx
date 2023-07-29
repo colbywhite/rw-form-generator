@@ -44,6 +44,7 @@ const AutoFormPage = () => {
       <section className="text-center">
         <h2 className="mb-4 text-2xl">Create user</h2>
         <AutoForm
+          aria-label="Create user"
           className="mx-auto w-fit"
           fieldClassName="input-bordered input-secondary input w-full max-w-xs"
           fieldErrorClassName="input-bordered input-secondary input w-full max-w-xs input-error"

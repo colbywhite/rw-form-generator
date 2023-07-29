@@ -29,6 +29,7 @@ type AutoFormSpecificProps<
   Label?: FC<string>
   FieldError?: FC<string>
   FieldWrapper?: (props: PropsWithChildren) => ReactElement
+  'aria-label': string // make this a required prop
 }
 
 export type AutoFormProps<
@@ -37,7 +38,7 @@ export type AutoFormProps<
   Catchall extends ZodTypeAny = ZodTypeAny,
   Output = objectOutputType<T, Catchall, UnknownKeys>,
   Input = objectInputType<T, Catchall, UnknownKeys>
-> = Omit<FormProps<Output>, 'formMethods' | 'config'> &
+> = Omit<FormProps<Output>, 'formMethods' | 'config' | 'aria-label'> &
   PropsWithChildren<
     AutoFormSpecificProps<T, UnknownKeys, Catchall, Output, Input>
   >

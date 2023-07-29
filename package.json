@@ -6,7 +6,8 @@
     "build": "redwood build",
     "lint": "redwood lint",
     "lint:fix": "redwood lint --fix",
-    "storybook": "redwood storybook"
+    "storybook": "redwood storybook",
+    "test": "redwood test"
   },
   "private": true,
   "workspaces": {

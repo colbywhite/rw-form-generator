@@ -51,6 +51,7 @@ const CreateUserForm = () => {
   return (
     <Form
       className="mx-auto w-fit"
+      aria-label="Create user"
       onSubmit={onSubmit}
       error={error}
       formMethods={formMethods}

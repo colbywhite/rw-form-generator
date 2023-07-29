@@ -13,6 +13,7 @@ export default meta
 
 type Story<T extends ZodRawShape> = StoryObj<typeof AutoForm<T>>
 const formClasses = 'flex flex-col gap-4'
+const ariaLabel = 'Storybook example'
 
 const stringSchema: ZodRawShape = {
   // TODO support unions
@@ -21,7 +22,11 @@ const stringSchema: ZodRawShape = {
 }
 export const String: Story<typeof stringSchema> = {
   render: () => (
-    <AutoForm className={formClasses} schema={z.object(stringSchema)} />
+    <AutoForm
+      aria-label={ariaLabel}
+      className={formClasses}
+      schema={z.object(stringSchema)}
+    />
   ),
 }
 
@@ -36,6 +41,10 @@ const emailSchema: ZodRawShape = {
 }
 export const Email: Story<typeof emailSchema> = {
   render: () => (
-    <AutoForm className={formClasses} schema={z.object(emailSchema)} />
+    <AutoForm
+      aria-label={ariaLabel}
+      className={formClasses}
+      schema={z.object(emailSchema)}
+    />
   ),
 }
