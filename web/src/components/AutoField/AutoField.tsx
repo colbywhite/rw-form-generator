@@ -1,12 +1,27 @@
-import type { ReactElement } from 'react'
+import type { PropsWithChildren, ReactElement } from 'react'
 
+import { titleCase } from 'title-case'
 import type {
   ZodFirstPartyTypeKind,
   ZodStringCheck,
   ZodTypeAny,
 } from 'zod/lib/types'
 
-import { EmailField, FieldError, TextField } from '@redwoodjs/forms'
+import {
+  EmailField,
+  FieldError as RedwoodFieldError,
+  InputFieldProps,
+  TextField,
+} from '@redwoodjs/forms'
+
+/**
+ * These are the props that will be passed to the underlying input
+ * TODO: this should likely start with FieldProps from @redwoodjs/forms, but it's not exported
+ */
+type AutoFieldInputProps = Omit<
+  InputFieldProps,
+  'type' | 'validation' | 'onChange' | 'onBlur' | 'form'
+>
 
 function getInputComponentFromZodType(
   type: ZodFirstPartyTypeKind,
@@ -19,23 +34,19 @@ function getInputComponentFromZodType(
   throw new Error(`zod schema of ${type} is not yet supported`)
 }
 
-const AutoField = <T extends ZodTypeAny, LabelElement extends ReactElement>({
+const AutoField = <T extends ZodTypeAny>({
   type,
   name,
-  label,
-  className,
-  additionalErrorClass,
-  fieldErrorClassName,
-  wrapperClassName,
+  Label = <label htmlFor={name}>{titleCase(name)}</label>,
+  FieldWrapper = ({ children }) => <>{children}</>,
+  FieldError = <RedwoodFieldError name={name} />,
+  ...fieldProps
 }: {
   type: T
-  name: string
-  label?: LabelElement
-  className?: string
-  additionalErrorClass?: string
-  fieldErrorClassName?: string
-  wrapperClassName?: string
-}) => {
+  Label?: ReactElement
+  FieldError?: ReactElement
+  FieldWrapper?: (props: PropsWithChildren) => ReactElement
+} & AutoFieldInputProps) => {
   // TODO is there a better way to type this?
   const { typeName, checks } = type._def
   const InputComponent = getInputComponentFromZodType(
@@ -43,19 +54,11 @@ const AutoField = <T extends ZodTypeAny, LabelElement extends ReactElement>({
     checks as ZodStringCheck[]
   )
   return (
-    <div className={wrapperClassName}>
-      {label}
-      <InputComponent
-        name={name}
-        className={className}
-        errorClassName={
-          className
-            ? `${className} ${additionalErrorClass}`
-            : additionalErrorClass
-        }
-      />
-      <FieldError name={name} className={fieldErrorClassName} />
-    </div>
+    <FieldWrapper>
+      {Label}
+      <InputComponent name={name} {...fieldProps} />
+      {FieldError}
+    </FieldWrapper>
   )
 }
 

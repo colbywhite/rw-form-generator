@@ -1,12 +1,10 @@
-import type { FC } from 'react'
-
 import { titleCase } from 'title-case'
 import type {
   CreateUserMutation,
   CreateUserMutationVariables,
 } from 'types/graphql'
 
-import { Submit } from '@redwoodjs/forms'
+import { FieldError, Submit } from '@redwoodjs/forms'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
@@ -32,11 +30,6 @@ const AutoFormPage = () => {
       toast.success(`${name || email} user created.`, { icon: '✅' }),
     refetchQueries: [{ query: UsersQuery }],
   })
-  const Label: FC<string> = (name) => (
-    <label htmlFor={name} className="label">
-      <span className="label-text">{titleCase(name)}</span>
-    </label>
-  )
   return (
     <main className="grid grid-cols-2 gap-8 p-2">
       <MetaTags title="Create a user" description="Create user form" />
@@ -53,16 +46,27 @@ const AutoFormPage = () => {
         <AutoForm
           className="mx-auto w-fit"
           fieldClassName="input-bordered input-secondary input w-full max-w-xs"
-          additionalFieldErrorClass="input-error"
-          fieldWrapperClassName="form-control"
-          fieldErrorClassName="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
-          schema={CreateUserSchema}
-          error={error}
-          label={Label}
+          fieldErrorClassName="input-bordered input-secondary input w-full max-w-xs input-error"
           onSubmit={(result) =>
             // TODO why does zod not pick up that email is required in the types?
             create({ variables: { input: result as Required<typeof result> } })
           }
+          schema={CreateUserSchema}
+          error={error}
+          Label={(name) => (
+            <label htmlFor={name} className="label">
+              <span className="label-text">{titleCase(name)}</span>
+            </label>
+          )}
+          FieldWrapper={({ children }) => (
+            <div className="form-control">{children}</div>
+          )}
+          FieldError={(name) => (
+            <FieldError
+              name={name}
+              className="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
+            />
+          )}
         >
           <div className="form-control mt-4">
             <Submit disabled={loading} className="btn-primary btn">

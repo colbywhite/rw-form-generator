@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react'
+import type { FC, PropsWithChildren, ReactElement } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import type {
@@ -25,10 +25,10 @@ type AutoFormSpecificProps<
   schema: ZodObject<T, UnknownKeys, Catchall, Output, Input>
   resetOnSuccess?: boolean
   fieldClassName?: string
-  fieldWrapperClassName?: string
-  additionalFieldErrorClass?: string
   fieldErrorClassName?: string
-  label?: FC<string>
+  Label?: FC<string>
+  FieldError?: FC<string>
+  FieldWrapper?: (props: PropsWithChildren) => ReactElement
 }
 
 export type AutoFormProps<
@@ -53,11 +53,11 @@ const AutoForm = <
   onSubmit,
   resetOnSuccess = true,
   fieldErrorClassName,
-  fieldWrapperClassName,
-  additionalFieldErrorClass,
   fieldClassName,
   children,
-  label,
+  Label,
+  FieldError,
+  FieldWrapper,
   ...formProps
 }: AutoFormProps<T, UnknownKeys, Catchall, Output, Input>) => {
   const formMethods = useForm({
@@ -80,10 +80,10 @@ const AutoForm = <
           type={schema.shape[key]}
           name={key}
           className={fieldClassName}
-          wrapperClassName={fieldWrapperClassName}
-          additionalErrorClass={additionalFieldErrorClass}
-          fieldErrorClassName={fieldErrorClassName}
-          {...(label ? { label: label(key) } : {})}
+          errorClassName={fieldErrorClassName}
+          {...(Label ? { Label: Label(key) } : {})}
+          {...(FieldError ? { FieldError: FieldError(key) } : {})}
+          {...(FieldWrapper ? { FieldWrapper: FieldWrapper } : {})}
         />
       ))}
       {children}
