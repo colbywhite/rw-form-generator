@@ -13,7 +13,7 @@ import type {
 import type { FormProps, SubmitHandler } from '@redwoodjs/forms'
 import { Form, useForm } from '@redwoodjs/forms'
 
-import AutoField from 'src/components/AutoField/AutoField'
+import AutoField, { type Override } from 'src/components/AutoField/AutoField'
 
 type AutoFormSpecificProps<
   T extends ZodRawShape,
@@ -30,6 +30,7 @@ type AutoFormSpecificProps<
   FieldError?: FC<string>
   FieldWrapper?: (props: PropsWithChildren) => ReactElement
   'aria-label': string // make this a required prop
+  overrides?: Record<string, Override>
 }
 
 export type AutoFormProps<
@@ -59,6 +60,7 @@ const AutoForm = <
   Label,
   FieldError,
   FieldWrapper,
+  overrides = {},
   ...formProps
 }: AutoFormProps<T, UnknownKeys, Catchall, Output, Input>) => {
   const formMethods = useForm({
@@ -85,6 +87,7 @@ const AutoForm = <
           {...(Label ? { Label: Label(key) } : {})}
           {...(FieldError ? { FieldError: FieldError(key) } : {})}
           {...(FieldWrapper ? { FieldWrapper: FieldWrapper } : {})}
+          {...(overrides[key] ? { override: overrides[key] } : {})}
         />
       ))}
       {children}

@@ -1,4 +1,5 @@
-import type { PropsWithChildren, ReactElement } from 'react'
+import type { PropsWithChildren, ReactElement, ReactNode } from 'react'
+import { forwardRef } from 'react'
 
 import { titleCase } from 'title-case'
 import type {
@@ -8,15 +9,18 @@ import type {
 } from 'zod/lib/types'
 
 import {
+  CheckboxField,
   EmailField,
   FieldError as RedwoodFieldError,
-  InputFieldProps,
+  InputField,
+  type InputFieldProps,
   TextField,
 } from '@redwoodjs/forms'
 
 /**
  * These are the props that will be passed to the underlying input
- * TODO: this should likely start with FieldProps from @redwoodjs/forms, but it's not exported
+ * TODO: this should likely start with FieldProps from @redwoodjs/forms
+ *  to pick up HTMLTextAreaElement & HTMLSelectElement, but it's not exported
  */
 type AutoFieldInputProps = Omit<
   InputFieldProps,
@@ -34,25 +38,47 @@ function getInputComponentFromZodType(
   throw new Error(`zod schema of ${type} is not yet supported`)
 }
 
+export type Override = InputFieldProps['type'] | 'checkbox'
+// | 'select'
+// | 'textarea'
+
+function getOverrideComponent(override: Override) {
+  if (override === 'checkbox') {
+    return CheckboxField
+    // } else if (override === 'select') {
+    //   return SelectField
+    // } else if (override === 'textarea') {
+    //   return TextAreaField
+  }
+  return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
+    (props, ref) => <InputField ref={ref} type={override} {...props} />
+  )
+}
+
 const AutoField = <T extends ZodTypeAny>({
   type,
   name,
   Label = <label htmlFor={name}>{titleCase(name)}</label>,
   FieldWrapper = ({ children }) => <>{children}</>,
   FieldError = <RedwoodFieldError name={name} />,
+  override,
   ...fieldProps
 }: {
   type: T
-  Label?: ReactElement
-  FieldError?: ReactElement
+  Label?: ReactNode
+  FieldError?: ReactNode
   FieldWrapper?: (props: PropsWithChildren) => ReactElement
+  override?: Override
 } & AutoFieldInputProps) => {
   // TODO is there a better way to type this?
   const { typeName, checks } = type._def
-  const InputComponent = getInputComponentFromZodType(
-    typeName as ZodFirstPartyTypeKind,
-    checks as ZodStringCheck[]
-  )
+  const InputComponent =
+    override === undefined
+      ? getInputComponentFromZodType(
+          typeName as ZodFirstPartyTypeKind,
+          checks as ZodStringCheck[]
+        )
+      : getOverrideComponent(override)
   return (
     <FieldWrapper>
       {Label}

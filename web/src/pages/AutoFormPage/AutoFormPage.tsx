@@ -68,6 +68,7 @@ const AutoFormPage = () => {
               className="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
             />
           )}
+          overrides={{ password: 'password' }}
         >
           <div className="form-control mt-4">
             <Submit disabled={loading} className="btn-primary btn">
