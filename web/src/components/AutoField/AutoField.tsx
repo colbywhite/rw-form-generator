@@ -2,20 +2,16 @@ import type { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { forwardRef } from 'react'
 
 import { titleCase } from 'title-case'
-import type {
-  ZodFirstPartyTypeKind,
-  ZodStringCheck,
-  ZodTypeAny,
-} from 'zod/lib/types'
+import type { ZodTypeAny } from 'zod'
 
 import {
   CheckboxField,
-  EmailField,
   FieldError as RedwoodFieldError,
   InputField,
   type InputFieldProps,
-  TextField,
 } from '@redwoodjs/forms'
+
+import { getInputComponentFromZod } from './field.utils'
 
 /**
  * These are the props that will be passed to the underlying input
@@ -26,17 +22,6 @@ type AutoFieldInputProps = Omit<
   InputFieldProps,
   'type' | 'validation' | 'onChange' | 'onBlur' | 'form'
 >
-
-function getInputComponentFromZodType(
-  type: ZodFirstPartyTypeKind,
-  checks: ZodStringCheck[] = []
-) {
-  if (type === 'ZodString') {
-    const emailCheck = checks.find(({ kind }) => kind === 'email')
-    return emailCheck ? EmailField : TextField
-  }
-  throw new Error(`zod schema of ${type} is not yet supported`)
-}
 
 export type Override = InputFieldProps['type'] | 'checkbox'
 // | 'select'
@@ -71,13 +56,9 @@ const AutoField = <T extends ZodTypeAny>({
   override?: Override
 } & AutoFieldInputProps) => {
   // TODO is there a better way to type this?
-  const { typeName, checks } = type._def
   const InputComponent =
     override === undefined
-      ? getInputComponentFromZodType(
-          typeName as ZodFirstPartyTypeKind,
-          checks as ZodStringCheck[]
-        )
+      ? getInputComponentFromZod(type)
       : getOverrideComponent(override)
   return (
     <FieldWrapper>
