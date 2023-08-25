@@ -1,17 +1,18 @@
 import type { PropsWithChildren, ReactElement, ReactNode } from 'react'
-import { forwardRef } from 'react'
 
 import { titleCase } from 'title-case'
 import type { ZodTypeAny } from 'zod'
 
 import {
-  CheckboxField,
   FieldError as RedwoodFieldError,
-  InputField,
   type InputFieldProps,
 } from '@redwoodjs/forms'
 
-import { getInputComponentFromZod } from './field.utils'
+import {
+  getInputComponentFromZod,
+  getOverrideComponent,
+  Override,
+} from './field.utils'
 
 /**
  * These are the props that will be passed to the underlying input
@@ -22,23 +23,6 @@ type AutoFieldInputProps = Omit<
   InputFieldProps,
   'type' | 'validation' | 'onChange' | 'onBlur' | 'form'
 >
-
-export type Override = InputFieldProps['type'] | 'checkbox'
-// | 'select'
-// | 'textarea'
-
-function getOverrideComponent(override: Override) {
-  if (override === 'checkbox') {
-    return CheckboxField
-    // } else if (override === 'select') {
-    //   return SelectField
-    // } else if (override === 'textarea') {
-    //   return TextAreaField
-  }
-  return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
-    (props, ref) => <InputField ref={ref} type={override} {...props} />
-  )
-}
 
 const AutoField = <T extends ZodTypeAny>({
   type,

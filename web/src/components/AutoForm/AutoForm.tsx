@@ -13,7 +13,8 @@ import type {
 import type { FormProps, SubmitHandler } from '@redwoodjs/forms'
 import { Form, useForm } from '@redwoodjs/forms'
 
-import AutoField, { type Override } from 'src/components/AutoField/AutoField'
+import AutoField from 'src/components/AutoField/AutoField'
+import { Override } from 'src/components/AutoField/field.utils'
 
 type AutoFormSpecificProps<
   T extends ZodRawShape,
