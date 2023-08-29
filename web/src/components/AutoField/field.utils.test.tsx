@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import type { ReactElement } from 'react'
 
 import { z } from 'zod'
 
@@ -15,7 +15,7 @@ import {
  * they need to by used in a react-hook-form context.
  * Wrapping in @redwoodjs/forms' Form element does the trick.
  */
-function renderInForm(element: JSX.Element) {
+function renderInForm(element: ReactElement) {
   render(<Form>{element}</Form>)
 }
 
@@ -56,6 +56,24 @@ describe('getInputComponentFromZodType', () => {
       const element = screen.getByRole<HTMLInputElement>('textbox')
       expect(element).toBeInTheDocument()
       expect(element.type).toEqual('email')
+      expect(element.name).toEqual('foo')
+    })
+
+    it('should return UrlField when there is only an url check', () => {
+      const Component = getInputComponentFromZod(schema.url())
+      renderInForm(<Component name="foo" />)
+      const element = screen.getByRole<HTMLInputElement>('textbox')
+      expect(element).toBeInTheDocument()
+      expect(element.type).toEqual('url')
+      expect(element.name).toEqual('foo')
+    })
+
+    it('should return UrlField when the url check is one among others', () => {
+      const Component = getInputComponentFromZod(schema.url().ip())
+      renderInForm(<Component name="foo" />)
+      const element = screen.getByRole<HTMLInputElement>('textbox')
+      expect(element).toBeInTheDocument()
+      expect(element.type).toEqual('url')
       expect(element.name).toEqual('foo')
     })
   })

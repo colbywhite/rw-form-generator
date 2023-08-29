@@ -7,14 +7,16 @@ import {
   CheckboxField,
   EmailField,
   InputField,
-  InputFieldProps,
+  type InputFieldProps,
   TextField,
+  UrlField,
 } from '@redwoodjs/forms'
 
 export function getInputComponentFromZod<T extends ZodTypeAny>(type: T) {
   if (isStringDef(type._def)) {
     const emailCheck = type._def.checks.find(({ kind }) => kind === 'email')
-    return emailCheck ? EmailField : TextField
+    const urlCheck = type._def.checks.find(({ kind }) => kind === 'url')
+    return emailCheck ? EmailField : urlCheck ? UrlField : TextField
   }
 
   throw new Error(`zod schema of ${type} not yet supported`)
