@@ -1,10 +1,11 @@
 import { forwardRef } from 'react'
 
-import type { ZodStringDef, ZodTypeAny, ZodTypeDef } from 'zod'
+import type { ZodDateDef, ZodStringDef, ZodTypeAny, ZodTypeDef } from 'zod'
 import { ZodFirstPartyTypeKind } from 'zod'
 
 import {
   CheckboxField,
+  DateField,
   EmailField,
   InputField,
   type InputFieldProps,
@@ -17,15 +18,25 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(type: T) {
     const emailCheck = type._def.checks.find(({ kind }) => kind === 'email')
     const urlCheck = type._def.checks.find(({ kind }) => kind === 'url')
     return emailCheck ? EmailField : urlCheck ? UrlField : TextField
+  } else if (isDateDef(type._def)) {
+    return DateField
   }
 
-  throw new Error(`zod schema of ${type} not yet supported`)
+  throw new Error(`zod schema of ${getDefType(type._def)} not yet supported`)
+}
+
+function isDateDef(def: ZodTypeDef): def is ZodDateDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodDate
+}
+
+function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {
+  // Every ZodTypeDef contains a typeName
+  // but the zod types don't accurately reflect that, hence the casting
+  return (def as any).typeName
 }
 
 function isStringDef(def: ZodTypeDef): def is ZodStringDef {
-  // Every ZodTypeDef contains a typeName
-  // but the zod types don't accurately reflect that, hence the casting
-  return (def as any).typeName === ZodFirstPartyTypeKind.ZodString
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodString
 }
 
 export type Override = InputFieldProps['type'] | 'checkbox'
