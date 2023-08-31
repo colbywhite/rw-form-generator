@@ -1,6 +1,12 @@
 import { forwardRef } from 'react'
 
-import type { ZodDateDef, ZodStringDef, ZodTypeAny, ZodTypeDef } from 'zod'
+import type {
+  ZodDateDef,
+  ZodNumberDef,
+  ZodStringDef,
+  ZodTypeAny,
+  ZodTypeDef,
+} from 'zod'
 import { ZodFirstPartyTypeKind } from 'zod'
 
 import {
@@ -9,6 +15,7 @@ import {
   EmailField,
   InputField,
   type InputFieldProps,
+  NumberField,
   TextField,
   UrlField,
 } from '@redwoodjs/forms'
@@ -20,6 +27,8 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(type: T) {
     return emailCheck ? EmailField : urlCheck ? UrlField : TextField
   } else if (isDateDef(type._def)) {
     return DateField
+  } else if (isNumberDef(type._def)) {
+    return NumberField
   }
 
   throw new Error(`zod schema of ${getDefType(type._def)} not yet supported`)
@@ -27,6 +36,10 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(type: T) {
 
 function isDateDef(def: ZodTypeDef): def is ZodDateDef {
   return getDefType(def) === ZodFirstPartyTypeKind.ZodDate
+}
+
+function isNumberDef(def: ZodTypeDef): def is ZodNumberDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodNumber
 }
 
 function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {

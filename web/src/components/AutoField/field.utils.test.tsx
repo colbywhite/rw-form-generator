@@ -27,6 +27,19 @@ function renderInForm(element: ReactElement, name: string) {
 const NAME = 'foo' as const
 
 describe('getInputComponentFromZodType', () => {
+  describe('when given ZodNumber', () => {
+    const schema = z.number()
+
+    it('should return NumberField', () => {
+      const Component = getInputComponentFromZod(schema)
+      renderInForm(<Component name={NAME} />, NAME)
+      const element = screen.getByRole<HTMLInputElement>('spinbutton')
+      expect(element).toBeInTheDocument()
+      expect(element.type).toEqual('number')
+      expect(element.name).toEqual(NAME)
+    })
+  })
+
   describe('when given ZodDate', () => {
     const schema = z.date()
 
