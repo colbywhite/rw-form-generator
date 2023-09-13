@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren, ReactElement } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import type {
@@ -15,6 +15,7 @@ import { Form, useForm } from '@redwoodjs/forms'
 
 import AutoField from 'src/components/AutoField/AutoField'
 import { Override } from 'src/components/AutoField/field.utils'
+import type { DefaultLabel } from 'src/components/AutoField/labeled-inputs'
 
 type AutoFormSpecificProps<
   T extends ZodRawShape,
@@ -27,9 +28,9 @@ type AutoFormSpecificProps<
   resetOnSuccess?: boolean
   fieldClassName?: string
   fieldErrorClassName?: string
-  Label?: FC<string>
+  Label?: typeof DefaultLabel
   FieldError?: FC<string>
-  FieldWrapper?: (props: PropsWithChildren) => ReactElement
+  FieldWrapper?: FC<PropsWithChildren>
   'aria-label': string // make this a required prop
   overrides?: Record<string, Override>
 }
@@ -85,9 +86,9 @@ const AutoForm = <
           name={key}
           className={fieldClassName}
           errorClassName={fieldErrorClassName}
-          {...(Label ? { Label: Label(key) } : {})}
+          Label={Label}
+          FieldWrapper={FieldWrapper}
           {...(FieldError ? { FieldError: FieldError(key) } : {})}
-          {...(FieldWrapper ? { FieldWrapper: FieldWrapper } : {})}
           {...(overrides[key] ? { override: overrides[key] } : {})}
         />
       ))}

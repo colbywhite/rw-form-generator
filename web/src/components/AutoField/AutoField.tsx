@@ -1,12 +1,14 @@
-import type { PropsWithChildren, ReactElement, ReactNode } from 'react'
+import type { FC, PropsWithChildren, ReactNode } from 'react'
+import { Fragment } from 'react'
 
-import { titleCase } from 'title-case'
 import type { ZodTypeAny } from 'zod'
 
 import {
   FieldError as RedwoodFieldError,
   type InputFieldProps,
 } from '@redwoodjs/forms'
+
+import type { DefaultLabel } from 'src/components/AutoField/labeled-inputs'
 
 import {
   getInputComponentFromZod,
@@ -27,26 +29,25 @@ type AutoFieldInputProps = Omit<
 const AutoField = <T extends ZodTypeAny>({
   type,
   name,
-  Label = <label htmlFor={name}>{titleCase(name)}</label>,
-  FieldWrapper = ({ children }) => <>{children}</>,
+  Label,
+  FieldWrapper = Fragment,
   FieldError = <RedwoodFieldError name={name} />,
   override,
   ...fieldProps
 }: {
   type: T
-  Label?: ReactNode
+  Label?: typeof DefaultLabel
   FieldError?: ReactNode
-  FieldWrapper?: (props: PropsWithChildren) => ReactElement
+  FieldWrapper?: FC<PropsWithChildren>
   override?: Override
 } & AutoFieldInputProps) => {
   // TODO is there a better way to type this?
   const InputComponent =
     override === undefined
-      ? getInputComponentFromZod(type)
-      : getOverrideComponent(override)
+      ? getInputComponentFromZod(type, Label)
+      : getOverrideComponent(override, Label)
   return (
     <FieldWrapper>
-      {Label}
       <InputComponent name={name} {...fieldProps} />
       {FieldError}
     </FieldWrapper>

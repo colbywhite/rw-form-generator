@@ -54,9 +54,10 @@ const AutoFormPage = () => {
           }
           schema={CreateUserSchema}
           error={error}
-          Label={(name) => (
-            <label htmlFor={name} className="label">
-              <span className="label-text">{titleCase(name)}</span>
+          Label={({ name, children }) => (
+            <label className="label">
+              <span className="label-text mr-4">{titleCase(name)}</span>
+              {children}
             </label>
           )}
           FieldWrapper={({ children }) => (
