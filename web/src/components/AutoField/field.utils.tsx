@@ -1,6 +1,7 @@
 import { type ComponentProps, forwardRef, type RefAttributes } from 'react'
 
 import type {
+  ZodArrayDef,
   ZodDateDef,
   ZodEnumDef,
   ZodNumberDef,
@@ -11,6 +12,7 @@ import type {
 import { ZodFirstPartyTypeKind } from 'zod'
 
 import {
+  CheckboxField,
   type CheckboxFieldProps,
   DateField,
   EmailField,
@@ -57,12 +59,27 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
     return ({
       name,
       ...props
-    }: Omit<CheckboxFieldProps, 'ref' | 'value'> &
+    }: Omit<ComponentProps<typeof RadioField>, 'ref' | 'value'> &
       RefAttributes<HTMLInputElement>) => (
       <>
         {type._def.values.map((value, index) => (
           <Label name={value} key={index}>
             <RadioField name={name} value={value} {...props} />
+          </Label>
+        ))}
+      </>
+    )
+  } else if (isArrayDef(type._def) && isEnumDef(type._def.type._def)) {
+    const { values } = type._def.type._def
+    return ({
+      name,
+      ...props
+    }: Omit<CheckboxFieldProps, 'ref' | 'value'> &
+      RefAttributes<HTMLInputElement>) => (
+      <>
+        {values.map((value, index) => (
+          <Label name={value} key={index}>
+            <CheckboxField name={name} value={value} {...props} />
           </Label>
         ))}
       </>
@@ -84,7 +101,11 @@ function isEnumDef(def: ZodTypeDef): def is ZodEnumDef {
   return getDefType(def) === ZodFirstPartyTypeKind.ZodEnum
 }
 
-function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {
+function isArrayDef(def: ZodTypeDef): def is ZodArrayDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodArray
+}
+
+export function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {
   // Every ZodTypeDef contains a typeName
   // but the zod types don't accurately reflect that, hence the casting
   return (def as any).typeName

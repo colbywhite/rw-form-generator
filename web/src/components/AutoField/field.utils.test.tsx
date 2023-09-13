@@ -10,7 +10,7 @@ import { getInputComponentFromZod, getOverrideComponent } from "src/components/A
 
 /**
  * Because the @redwoodjs/forms elements are wrappers around react-hook-form,
- * they need to by used in a react-hook-form context.
+ * they need to be used in a react-hook-form context.
  * Wrapping in a @redwoodjs/forms <Form> element does the trick.
  */
 function renderInForm(element: ReactElement) {
@@ -34,6 +34,35 @@ describe('getInputComponentFromZodType', () => {
         const element = optionElements[index]
         expect(element).toBeInTheDocument()
         expect(element.type).toEqual('radio')
+        expect(element.name).toEqual(NAME)
+        expect(element.value).toEqual(option)
+        const labeledElement = screen.getByLabelText<HTMLInputElement>(
+          titleCase(option)
+        )
+        expect(element).toBe(labeledElement)
+      })
+    })
+  })
+
+  describe('when given ZodArray', () => {
+    const options = ['bar', 'baz', 'qux'] as const
+    const schema = z.enum(options).array()
+
+    it('should throw error on arbitrary arrays', () => {
+      expect(() => getInputComponentFromZod(z.string().array())).toThrow(
+        'ZodArray not yet supported'
+      )
+    })
+
+    it('should return CheckboxField when it is an array of an enum', () => {
+      const Component = getInputComponentFromZod(schema)
+      renderInForm(<Component name={NAME} />)
+      const optionElements = screen.getAllByRole<HTMLInputElement>('checkbox')
+      expect(optionElements.length).toEqual(options.length)
+      options.forEach((option, index) => {
+        const element = optionElements[index]
+        expect(element).toBeInTheDocument()
+        expect(element.type).toEqual('checkbox')
         expect(element.name).toEqual(NAME)
         expect(element.value).toEqual(option)
         const labeledElement = screen.getByLabelText<HTMLInputElement>(
