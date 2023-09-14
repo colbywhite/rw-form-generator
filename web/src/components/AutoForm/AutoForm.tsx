@@ -8,7 +8,7 @@ import type {
   ZodObject,
   ZodRawShape,
   ZodTypeAny,
-} from 'zod/lib/types'
+} from 'zod'
 
 import type { FormProps, SubmitHandler } from '@redwoodjs/forms'
 import { Form, useForm } from '@redwoodjs/forms'

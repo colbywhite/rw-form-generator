@@ -24454,6 +24454,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     tailwindcss: ^3.3.2
+    zod-to-json-schema: ^3.21.4
   languageName: unknown
   linkType: soft
 
@@ -25308,6 +25309,15 @@ __metadata:
     compress-commons: ^4.1.0
     readable-stream: ^3.6.0
   checksum: ed9eb9387953576c43bdf7678705e8b0ff4e9149cf92b39fa845ddd5413b08daf68655b1ee8311e2dd7c88ddeb95908a785e8e48473016b2595870b0adf588d4
+  languageName: node
+  linkType: hard
+
+"zod-to-json-schema@npm:^3.21.4":
+  version: 3.21.4
+  resolution: "zod-to-json-schema@npm:3.21.4"
+  peerDependencies:
+    zod: ^3.21.4
+  checksum: 2fe95b984f239465b81ac374ed975f5c271385f76a2a860edf6890f85ac0d38720163f0a204a3329152f40b928816ea50e913f3e66a7032c43cf2cbf17f8d6b3
   languageName: node
   linkType: hard
 
