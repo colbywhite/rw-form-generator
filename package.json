@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "start": "redwood dev --fwd=\"--no-open\"",
-    "generate:form": "redwood exec generateForm",
+    "start": "redwood dev",
     "db:migrate": "redwood prisma migrate dev",
     "build": "redwood build",
     "lint": "redwood lint",
