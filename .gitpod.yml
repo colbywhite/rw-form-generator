@@ -5,8 +5,14 @@ image: gitpod/workspace-postgres
 tasks:
   - init: yarn install
     command: yarn rw prisma migrate dev && yarn rw dev --fwd="--allowed-hosts all"
+    env:
+      DATABASE_URL: "file:./dev.db"
+      PRISMA_HIDE_UPDATE_MESSAGE: true
 
 ports:
+  - port: 5432
+    name: DB
+    onOpen: ignore
   - port: 8910
     name: RedwoodJS web application
     onOpen: open-preview
