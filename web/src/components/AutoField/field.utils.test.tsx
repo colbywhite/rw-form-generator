@@ -1,12 +1,15 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'react'
 
-import { titleCase } from "title-case";
-import { z } from "zod";
+import { titleCase } from 'title-case'
+import { z } from 'zod'
 
-import { Form } from "@redwoodjs/forms";
-import { render, screen } from "@redwoodjs/testing/web";
+import { Form } from '@redwoodjs/forms'
+import { render, screen } from '@redwoodjs/testing/web'
 
-import { getInputComponentFromZod, getOverrideComponent } from "src/components/AutoField/field.utils";
+import {
+  getInputComponentFromZod,
+  getOverrideComponent,
+} from 'src/components/AutoField/field.utils'
 
 /**
  * Because the @redwoodjs/forms elements are wrappers around react-hook-form,
