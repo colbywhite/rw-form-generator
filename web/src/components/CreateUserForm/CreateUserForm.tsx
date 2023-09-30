@@ -1,5 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CreateUserMutation, CreateUserMutationVariables } from 'types/graphql'
+import type {
+  CreateUserMutation,
+  CreateUserMutationVariables,
+} from 'types/graphql'
 
 import {
   EmailField,
