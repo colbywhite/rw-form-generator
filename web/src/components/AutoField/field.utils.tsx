@@ -108,6 +108,7 @@ function isArrayDef(def: ZodTypeDef): def is ZodArrayDef {
 export function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {
   // Every ZodTypeDef contains a typeName
   // but the zod types don't accurately reflect that, hence the casting
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (def as any).typeName
 }
 
