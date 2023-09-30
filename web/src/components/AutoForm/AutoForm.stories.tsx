@@ -5,10 +5,7 @@ import { z, type ZodRawShape } from 'zod'
 
 import { FieldError } from '@redwoodjs/forms'
 
-import {
-  LOGIN_SHAPE,
-  ZodSchemaVisualizer,
-} from 'src/components/AutoForm/story.utils'
+import { LOGIN_SHAPE } from 'src/components/AutoForm/story.utils'
 
 import AutoForm from './AutoForm'
 
@@ -51,14 +48,6 @@ const meta: Meta<ComponentProps<typeof AutoForm>> = {
         disable: true,
       },
     },
-  },
-  render: ({ schema, ...args }) => {
-    return (
-      <section className="flex flex-row gap-4">
-        <AutoForm {...args} schema={schema} />
-        <ZodSchemaVisualizer schema={schema} className="mt-8" />
-      </section>
-    )
   },
 }
 
