@@ -1,0 +1,23 @@
+{
+  "$schema": "https://codesandbox.io/schemas/tasks.json",
+  "setupTasks": [
+    {
+      "name": "Installing Dependencies",
+      "command": "yarn install"
+    },
+    {
+      "name": "Set up DB",
+      "command": "yarn rw prisma migrate dev"
+    }
+  ],
+  "tasks": {
+    "dev": {
+      "name": "Application",
+      "command": "yarn rw prisma migrate dev && yarn rw dev --fwd=\"--allowed-hosts all --open=false\"",
+      "runAtStart": true,
+      "preview": {
+        "port": 8910
+      }
+    }
+  }
+}
