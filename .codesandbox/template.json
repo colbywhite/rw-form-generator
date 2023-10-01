@@ -1,0 +1,13 @@
+{
+  "title": "Redwood AutoForm POC",
+  "iconUrl": "https://redwoodjs.com/favicon.png",
+  "tags": [
+    "react",
+    "typescript",
+    "redwoodjs",
+    "redwood",
+    "prisma",
+    "forms"
+  ],
+  "published": false
+}
