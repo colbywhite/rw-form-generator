@@ -8,6 +8,24 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer base {
+  a {
+    @apply text-primary underline
+  }
+
+  a:hover {
+    @apply text-secondary
+  }
+
+  code {
+    color: rgb(220, 94, 56);
+    background-color: rgba(220, 94, 56, 0.2);
+    font-size: inherit;
+    @apply rounded px-1 py-2 font-mono
+  }
+}
+
 /**
  * END --- SETUP TAILWINDCSS EDIT
  */
