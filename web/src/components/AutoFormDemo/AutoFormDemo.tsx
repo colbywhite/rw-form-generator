@@ -1,50 +1,36 @@
+import { useState } from 'react'
+
 import { titleCase } from 'title-case'
-import type {
-  CreateUserMutation,
-  CreateUserMutationVariables,
-} from 'types/graphql'
 
 import { FieldError, Submit } from '@redwoodjs/forms'
-import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import AutoForm from 'src/components/AutoForm/AutoForm'
-import { QUERY as UsersQuery } from 'src/components/UsersCell'
 import { CreateUserSchema } from 'src/schemas'
 
-const CREATE_USER_EXAMPLE = gql`
-  mutation CreateUserMutation($input: CreateUserInput!) {
-    createUser(input: $input) {
-      id
-      name
-      email
-    }
-  }
-`
-
 export default function AutoFormDemo() {
-  const [create, { loading, error }] = useMutation<
-    CreateUserMutation,
-    CreateUserMutationVariables
-  >(CREATE_USER_EXAMPLE, {
-    onCompleted: ({ createUser: { name, email } }) =>
-      toast.success(`${name || email} user created.`, { icon: '✅' }),
-    refetchQueries: [{ query: UsersQuery }],
-  })
+  const [loading, setLoading] = useState(false)
+  const submitEntity = <T,>(result: T) => {
+    setLoading(true)
+    console.log('Submitted entity', { result })
+    toast
+      .promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+        loading: 'Pretending to create an entity',
+        success: 'Entity created; check the console.',
+        error: 'Entity creation failed',
+      })
+      .finally(() => setLoading(false))
+  }
   return (
     <>
-      <h2 className="mb-4 text-2xl">Create user</h2>
+      <h2 className="mb-4 text-2xl">Create entity</h2>
       <AutoForm
-        aria-label="Create user"
+        aria-label="Create entity"
         className="mx-auto w-fit"
         fieldClassName="input-bordered input-secondary input w-full max-w-xs"
         fieldErrorClassName="input-bordered input-secondary input w-full max-w-xs input-error"
-        onSubmit={(result) =>
-          // TODO why does zod not pick up that email is required in the types?
-          create({ variables: { input: result as Required<typeof result> } })
-        }
+        onSubmit={submitEntity}
         schema={CreateUserSchema}
-        error={error}
         Label={({ name, children }) => (
           <label className="label">
             <span className="label-text mr-4">{titleCase(name)}</span>

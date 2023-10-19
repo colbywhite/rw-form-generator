@@ -22,7 +22,7 @@
     color: rgb(220, 94, 56);
     background-color: rgba(220, 94, 56, 0.2);
     font-size: inherit;
-    @apply rounded px-1 py-2 font-mono
+    @apply rounded p-1 font-mono
   }
 }
 

@@ -7,7 +7,7 @@ import { useState, useEffect, type PropsWithChildren } from 'react'
 const RedwoodSplashLayout = ({ children }: PropsWithChildren) => {
   const version = useVersion()
   return (
-    <main className="flex min-h-screen flex-col gap-8 px-5 pb-8 pt-4">
+    <main className="flex min-h-screen flex-col gap-16 px-5 pb-8 pt-4">
       <svg
         className="fixed left-0 top-1/2 -z-10 max-h-[140vh] -translate-x-1/2 -translate-y-1/2 fill-base-200"
         viewBox="0 0 917 1000"
