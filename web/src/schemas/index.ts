@@ -1,1 +1,1 @@
-export { CreateUserSchema } from './CreateUser'
+export { DemoSchema } from './Demo'

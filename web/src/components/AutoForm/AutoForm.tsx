@@ -25,6 +25,9 @@ type AutoFormSpecificProps<
   Input = objectInputType<T, Catchall, UnknownKeys>
 > = {
   schema: ZodObject<T, UnknownKeys, Catchall, Output, Input>
+  /**
+   * TODO: This is duplicate of react-hook-form's `resetOptions` and likely not needed
+   */
   resetOnSuccess?: boolean
   fieldClassName?: string
   fieldErrorClassName?: string

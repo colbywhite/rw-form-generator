@@ -6,7 +6,7 @@ import { FieldError, Submit } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/toast'
 
 import AutoForm from 'src/components/AutoForm/AutoForm'
-import { CreateUserSchema } from 'src/schemas'
+import { DemoSchema } from 'src/schemas'
 
 export default function AutoFormDemo() {
   const [loading, setLoading] = useState(false)
@@ -30,7 +30,7 @@ export default function AutoFormDemo() {
         fieldClassName="input-bordered input-secondary input w-full max-w-xs"
         fieldErrorClassName="input-bordered input-secondary input w-full max-w-xs input-error"
         onSubmit={submitEntity}
-        schema={CreateUserSchema}
+        schema={DemoSchema}
         Label={({ name, children }) => (
           <label className="label">
             <span className="label-text mr-4">{titleCase(name)}</span>

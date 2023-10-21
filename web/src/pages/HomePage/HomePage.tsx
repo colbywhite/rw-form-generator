@@ -14,19 +14,26 @@ const HomePage = () => {
             <AutoFormDemo />
           </section>
           <section className="max-w-md text-sm leading-loose">
-            <h1 className="mb-4 text-4xl">
-              <code>AutoForm</code> Demo
+            <h1 className="mb-8 text-4xl">
+              <code>AutoForm</code> demo
             </h1>
+            <p className="mb-8 text-sm font-bold italic">
+              Fork this in{' '}
+              <a href="https://githubbox.com/colbywhite/rw-form-generator">
+                codesandbox
+              </a>{' '}
+              to experiment with your own forms; then give some{' '}
+              <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">feedback</a>!
+            </p>
             <p className="mb-4">
               This is a demo of creating a form via the proposed{' '}
               <code>AutoForm</code> component. This component takes in a{' '}
               <code>zod</code> schema and generates a functional form for you.
             </p>
             <p className="mb-4">
-              This demo (found at{' '}
-              <code>web/src/components/AutoFormDemo/AutoFormDemo.tsx</code>)
+              This demo (found at <code>web/src/components/AutoFormDemo</code>)
               generates a form based on a schema in{' '}
-              <code>web/src/schemas/CreateUser.ts</code>.
+              <code>web/src/schemas/Demo.ts</code>.
             </p>
             <p className="mb-4">
               Fork this{' '}
@@ -37,11 +44,17 @@ const HomePage = () => {
               forms you have used before. It&apos;s not expected you&apos;ll be
               able to create every type of form, but that&apos;s the feedback
               we&apos;re looking for. What features are missing you would need
-              to create a form? Take a look and fill out this survey to give
+              to create a form? Take a look and fill out this{' '}
+              <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">survey</a> to give
               feedback to help direct the project.
             </p>
             <ul className="mb-4 list-disc">
               <h2 className="mb-2 text-lg">Relevant links</h2>
+              <li>
+                <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">
+                  Feedback survey
+                </a>
+              </li>
               <li>
                 <a href="https://www.notion.so/redwoodjs/Form-Generator-113ccba4a6614fc3b4c3dc62c31edd05?pvs=4">
                   Form Generator project
