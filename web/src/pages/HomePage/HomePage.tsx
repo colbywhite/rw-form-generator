@@ -9,12 +9,12 @@ const HomePage = () => {
     <>
       <MetaTags title="AutoForm demo" description="AutoForm demo" />
       <RedwoodSplashLayout>
-        <section className="flex flex-row gap-16">
+        <section className="flex flex-col-reverse gap-16 md:flex-row">
           <section className="max-h-[60vh] overflow-auto text-center">
             <AutoFormDemo />
           </section>
           <section className="max-w-md text-sm leading-loose">
-            <h1 className="mb-8 text-4xl">
+            <h1 className="mb-8 text-center text-4xl">
               <code>AutoForm</code> demo
             </h1>
             <p className="mb-8 text-sm font-bold italic">
@@ -49,7 +49,7 @@ const HomePage = () => {
               feedback to help direct the project.
             </p>
             <ul className="mb-4 list-disc">
-              <h2 className="mb-2 text-lg">Relevant links</h2>
+              <h2 className="mb-2 text-center text-lg">Relevant links</h2>
               <li>
                 <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">
                   Feedback survey
