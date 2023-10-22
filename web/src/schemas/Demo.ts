@@ -1,9 +1,3 @@
-/**
- * This file is a copy of what's in `api/src/schemas`.
- * Make changes to the api one and copy it over here.
- * When Redwood iterates on their package structure
- * files like this will be easier to share across api and web.
- */
 import { z } from 'zod'
 
 export const DemoSchema = z.object({

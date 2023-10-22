@@ -1,8 +1,3 @@
-/**
- * Any changes made here should be copied over to its equivalent in `web/src/schemas.
- * When Redwood iterates on their package structure
- * files like this will be easier to share across api and web.
- */
 import { z } from 'zod'
 
 export const CreateUserSchema = z.object({
