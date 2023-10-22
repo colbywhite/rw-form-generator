@@ -44,7 +44,12 @@ const HomePage = () => {
               forms you have used before. It&apos;s not expected you&apos;ll be
               able to create every type of form, but that&apos;s the feedback
               we&apos;re looking for. What features are missing you would need
-              to create a form? Take a look and fill out this{' '}
+              to create a form? Take a look at the component&apos;s in-progress
+              doc at <code>web/src/components/AutoForm/README.md</code> to learn
+              what the component currently can (and cannot) do.
+            </p>
+            <p className="mb-4">
+              Then fill out this{' '}
               <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">survey</a> to give
               feedback to help direct the project.
             </p>

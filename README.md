@@ -10,7 +10,9 @@ This demo (found at `web/src/components/AutoFormDemo/AutoFormDemo.tsx`) generate
 Fork this [codesandbox](https://githubbox.com/colbywhite/rw-form-generator) and make changes to the schema and see if you can recreate real forms you have used before.
 It's not expected you'll be able to create every type of form, but that's the feedback we're looking for.
 What features are missing you would need to create a form?
-Take a look and fill out this survey to give feedback to help direct the project.
+Take a look at the component's in-progress doc at `web/src/components/AutoForm/README.md` to learn what the component currently can (and cannot) do.
+
+Then fill out this [survey](https://forms.gle/Vrb9UWqb6JR8Jx9T8) to give feedback to help direct the project.
 
 # Relevant links
 
