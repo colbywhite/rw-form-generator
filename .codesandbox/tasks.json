@@ -1,9 +1,6 @@
 {
   "$schema": "https://codesandbox.io/schemas/tasks.json",
-  "setupTasks": [
-    "yarn install",
-    "yarn rw prisma migrate dev"
-  ],
+  "setupTasks": [],
   "tasks": {
     "dev": {
       "name": "yarn rw dev",
