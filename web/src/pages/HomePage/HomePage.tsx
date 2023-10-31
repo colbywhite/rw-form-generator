@@ -22,7 +22,7 @@ const HomePage = () => {
               <a href="https://githubbox.com/colbywhite/rw-form-generator">
                 codesandbox
               </a>{' '}
-              to experiment with your own forms; then give some{' '}
+              to experiment with your own forms, then give some{' '}
               <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">feedback</a>!
             </p>
             <p className="mb-4">
