@@ -19,11 +19,22 @@ const HomePage = () => {
             </h1>
             <p className="mb-8 text-sm font-bold italic">
               Fork this in{' '}
-              <a href="https://githubbox.com/colbywhite/rw-form-generator">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://githubbox.com/colbywhite/rw-form-generator"
+              >
                 codesandbox
               </a>{' '}
               to experiment with your own forms, then give some{' '}
-              <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">feedback</a>!
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://forms.gle/Vrb9UWqb6JR8Jx9T8"
+              >
+                feedback
+              </a>
+              !
             </p>
             <p className="mb-4">
               This is a demo of creating a form via the proposed{' '}
@@ -37,7 +48,11 @@ const HomePage = () => {
             </p>
             <p className="mb-4">
               Fork this{' '}
-              <a href="https://githubbox.com/colbywhite/rw-form-generator">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://githubbox.com/colbywhite/rw-form-generator"
+              >
                 codesandbox
               </a>{' '}
               and make changes to the schema to see if you can recreate real
@@ -50,27 +65,52 @@ const HomePage = () => {
             </p>
             <p className="mb-4">
               Then fill out this{' '}
-              <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">survey</a> to give
-              feedback to help direct the project.
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://forms.gle/Vrb9UWqb6JR8Jx9T8"
+              >
+                survey
+              </a>{' '}
+              to give feedback to help direct the project.
             </p>
             <ul className="mb-4 list-disc">
               <h2 className="mb-2 text-center text-lg">Relevant links</h2>
               <li>
-                <a href="https://forms.gle/Vrb9UWqb6JR8Jx9T8">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://forms.gle/Vrb9UWqb6JR8Jx9T8"
+                >
                   Feedback survey
                 </a>
               </li>
               <li>
-                <a href="https://www.notion.so/redwoodjs/Form-Generator-113ccba4a6614fc3b4c3dc62c31edd05?pvs=4">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://www.notion.so/redwoodjs/Form-Generator-113ccba4a6614fc3b4c3dc62c31edd05?pvs=4"
+                >
                   Form Generator project
                 </a>{' '}
                 in Redwood&apos;s Notion
               </li>
               <li>
-                <a href="https://docs.google.com/document/d/1-2yYdznb79srxnZ5S7jsJx2eS0rrLpqyRfPWRk-T_3w/edit#">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://docs.google.com/document/d/1-2yYdznb79srxnZ5S7jsJx2eS0rrLpqyRfPWRk-T_3w/edit#"
+                >
                   Original proposal
                 </a>{' '}
-                from <a href="https://github.com/mdkess">@mdkess</a>
+                from{' '}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://github.com/mdkess"
+                >
+                  @mdkess
+                </a>
               </li>
             </ul>
           </section>
