@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { titleCase } from 'title-case'
 import { z } from 'zod'
 
-import { Form } from '@redwoodjs/forms'
+import { Form, type InputFieldProps, SelectField } from '@redwoodjs/forms'
 import { render, screen } from '@redwoodjs/testing/web'
 
 import {
@@ -176,13 +176,37 @@ describe('getInputComponentFromZodType', () => {
 })
 
 describe('getOverrideComponent', () => {
-  it('should default to a wrapped InputField', () => {
-    const Component = getOverrideComponent('range')
-    renderInForm(<Component name={NAME} />)
-    const element = screen.getByRole<HTMLInputElement>('slider')
-    expect(element).toBeInTheDocument()
-    expect(element.name).toEqual(NAME)
-    const labeledElement = screen.getByLabelText<HTMLInputElement>(LABEL_TEXT)
-    expect(element).toBe(labeledElement)
+  describe('when given a string override', () => {
+    it('should render an InputField with appropriate type', () => {
+      const Component = getOverrideComponent('range')
+      renderInForm(<Component name={NAME} />)
+      const element = screen.getByRole<HTMLInputElement>('slider')
+      expect(element).toBeInTheDocument()
+      expect(element.name).toEqual(NAME)
+      const labeledElement = screen.getByLabelText<HTMLInputElement>(LABEL_TEXT)
+      expect(element).toBe(labeledElement)
+    })
+  })
+
+  describe('when given a component override', () => {
+    const options = ['bar', 'baz', 'qux'] as const
+    const CustomSelectField = (props: InputFieldProps) => (
+      <SelectField name={props.name}>
+        {options.map((option, i) => (
+          <option key={i} value={option} />
+        ))}
+      </SelectField>
+    )
+
+    it('should render the given component', () => {
+      const Component = getOverrideComponent(CustomSelectField)
+      renderInForm(<Component name={NAME} />)
+      const element = screen.getByRole<HTMLSelectElement>('combobox')
+      expect(element).toBeInTheDocument()
+      expect(element.name).toEqual(NAME)
+      const labeledElement =
+        screen.getByLabelText<HTMLSelectElement>(LABEL_TEXT)
+      expect(element).toBe(labeledElement)
+    })
   })
 })

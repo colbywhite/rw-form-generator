@@ -1,4 +1,9 @@
-import { type ComponentProps, forwardRef, type RefAttributes } from 'react'
+import {
+  type FC,
+  type ComponentProps,
+  forwardRef,
+  type RefAttributes,
+} from 'react'
 
 import type {
   ZodArrayDef,
@@ -116,18 +121,25 @@ function isStringDef(def: ZodTypeDef): def is ZodStringDef {
   return getDefType(def) === ZodFirstPartyTypeKind.ZodString
 }
 
-export type Override = InputFieldProps['type']
+export type Override = FC<InputFieldProps> | InputFieldProps['type']
 // | 'select'
 // | 'textarea'
 
 export function getOverrideComponent(override: Override, Label = DefaultLabel) {
+  if (typeof override === 'string') {
+    return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
+      (props, ref) => {
+        return (
+          <Label name={props.name}>
+            <InputField ref={ref} type={override} {...props} />
+          </Label>
+        )
+      }
+    )
+  }
   return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
     (props, ref) => {
-      return (
-        <Label name={props.name}>
-          <InputField ref={ref} type={override} {...props} />
-        </Label>
-      )
+      return <Label name={props.name}>{override({ ...props, ref: ref })}</Label>
     }
   )
 }

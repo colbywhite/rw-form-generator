@@ -6,7 +6,8 @@ import { FieldError, Submit } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/toast'
 
 import AutoForm from 'src/components/AutoForm/AutoForm'
-import { DemoSchema } from 'src/schemas'
+import DataListInputField from 'src/components/DataListInputField/DataListInputField'
+import { DemoSchema, ICE_CREAM_FLAVORS } from 'src/schemas'
 
 export default function AutoFormDemo() {
   const [loading, setLoading] = useState(false)
@@ -26,6 +27,7 @@ export default function AutoFormDemo() {
       <h2 className="mb-4 text-2xl">Create entity</h2>
       <AutoForm
         aria-label="Create entity"
+        autoComplete="off"
         className="mx-auto w-fit"
         fieldClassName="input-bordered input-secondary input w-full max-w-xs"
         fieldErrorClassName="input-bordered input-secondary input w-full max-w-xs input-error"
@@ -33,7 +35,9 @@ export default function AutoFormDemo() {
         schema={DemoSchema}
         Label={({ name, children }) => (
           <label className="label">
-            <span className="label-text mr-4">{titleCase(name)}</span>
+            <span className="label-text mr-2 w-32">
+              {titleCase(name.split('_').join(' '))}
+            </span>
             {children}
           </label>
         )}
@@ -46,7 +50,12 @@ export default function AutoFormDemo() {
             className="my-1 rounded border border-error-content bg-error p-1 text-sm italic text-error-content"
           />
         )}
-        overrides={{ password: 'password' }}
+        overrides={{
+          password: 'password',
+          ice_cream_flavor: (props) => (
+            <DataListInputField {...props} options={ICE_CREAM_FLAVORS} />
+          ),
+        }}
       >
         <div className="form-control mt-4">
           <Submit disabled={loading} className="btn-primary btn">
