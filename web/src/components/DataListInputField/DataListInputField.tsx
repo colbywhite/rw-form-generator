@@ -1,5 +1,7 @@
 import { InputField, type InputFieldProps } from '@redwoodjs/forms'
 
+import { SearchIcon } from 'src/components/SearchIcon/SearchIcon'
+
 export default function DataListInputField({
   options,
   ...props
@@ -7,7 +9,10 @@ export default function DataListInputField({
   const listName = `${props.id || props.name}-list`
   return (
     <>
-      <InputField {...props} list={listName} />
+      <div className="relative">
+        <InputField {...props} list={listName} />
+        <SearchIcon className="absolute right-3 top-1/2 inline-block -translate-y-1/2" />
+      </div>
 
       <datalist id={listName}>
         {options.map((option, i) => (
