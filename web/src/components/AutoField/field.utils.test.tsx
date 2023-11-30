@@ -77,17 +77,37 @@ describe('getInputComponentFromZodType', () => {
   })
 
   describe('when given ZodNumber', () => {
-    const schema = z.number()
-
-    it('should return NumberField', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectComponentToBeNumberField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const element = screen.getByRole<HTMLInputElement>('spinbutton')
       expect(element).toBeInTheDocument()
       expect(element.type).toEqual('number')
       expect(element.name).toEqual(NAME)
       const labeledElement = screen.getByLabelText<HTMLInputElement>(LABEL_TEXT)
       expect(element).toBe(labeledElement)
+    }
+
+    describe('that is required', () => {
+      it('should return NumberField', () => {
+        const Component = getInputComponentFromZod(z.number())
+        expectComponentToBeNumberField(Component)
+      })
+    })
+
+    describe('that is optional', () => {
+      it('should return NumberField', () => {
+        const Component = getInputComponentFromZod(z.number().optional())
+        expectComponentToBeNumberField(Component)
+      })
+    })
+
+    describe('that accepts NaN', () => {
+      it('should return NumberField', () => {
+        const Component = getInputComponentFromZod(z.number().or(z.nan()))
+        expectComponentToBeNumberField(Component)
+      })
     })
   })
 
@@ -106,6 +126,17 @@ describe('getInputComponentFromZodType', () => {
 
   describe('when given ZodString', () => {
     const schema = z.string()
+
+    it('should return TextField when there are no checks', () => {
+      const Component = getInputComponentFromZod(schema)
+      renderInForm(<Component name={NAME} />)
+      const element = screen.getByRole<HTMLInputElement>('textbox')
+      expect(element).toBeInTheDocument()
+      expect(element.type).toEqual('text')
+      expect(element.name).toEqual(NAME)
+      const labeledElement = screen.getByLabelText<HTMLInputElement>(LABEL_TEXT)
+      expect(element).toBe(labeledElement)
+    })
 
     it('should return TextField when there are no checks', () => {
       const Component = getInputComponentFromZod(schema)

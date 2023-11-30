@@ -433,3 +433,22 @@ export default function Usage() {
   );
 }
 ```
+
+
+## Required vs. optional fields
+Due to the way HTML forms work (i.e. doing nothing in an `<input>` usually results in a `""` value), some zod tweaks may be needed to properly represent required and optional fields.
+Here is a quick guide.
+
+Note: this isn't directly related to this component, but is more of a guide on how html forms, `zod`, `react-hook-form` (which is what `@redwoodjs/forms` is built on), and `@hookform/resolvers` all play together.
+
+```tsx
+const schema = z.object({
+  // leaving a `<input type="number">` empty results in a `NaN`.
+  // what you choode to do with the NaN is up to you.
+  required_number: z
+    .number({ invalid_type_error: "Number is required" }),
+  optional_number: z
+    .number()
+    .or(z.nan())
+});
+```

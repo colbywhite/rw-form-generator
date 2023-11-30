@@ -1,6 +1,6 @@
 import {
-  type FC,
   type ComponentProps,
+  type FC,
   forwardRef,
   type RefAttributes,
 } from 'react'
@@ -10,11 +10,13 @@ import type {
   ZodDateDef,
   ZodEnumDef,
   ZodNumberDef,
+  ZodOptionalDef,
   ZodStringDef,
   ZodTypeAny,
   ZodTypeDef,
+  ZodUnionDef,
 } from 'zod'
-import { ZodFirstPartyTypeKind } from 'zod'
+import { ZodFirstPartyTypeKind, ZodNaN, ZodNumber, ZodOptional } from 'zod'
 
 import {
   CheckboxField,
@@ -54,10 +56,17 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
         <DateField name={name} {...props} />
       </Label>
     )
-  } else if (isNumberDef(type._def)) {
+  } else if (isNumberDef(type._def) || isNumberOptional(type._def)) {
     return ({ name, ...props }: ComponentProps<typeof NumberField>) => (
       <Label name={name}>
-        <NumberField name={name} {...props} />
+        <NumberField
+          name={name}
+          validation={{
+            valueAsNumber: true,
+            required: !isNumberOptional(type._def),
+          }}
+          {...props}
+        />
       </Label>
     )
   } else if (isEnumDef(type._def)) {
@@ -92,6 +101,35 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
   }
 
   throw new Error(`zod schema of ${getDefType(type._def)} not yet supported`)
+}
+
+function isNumberOptional(def: ZodTypeDef) {
+  return isOptionalNumberDef(def) || isNaNUnionDef(def)
+}
+
+function isOptionalNumberDef(
+  def: ZodTypeDef
+): def is ZodOptionalDef<ZodNumber> {
+  return isOptionalDef(def) && def.innerType instanceof ZodNumber
+}
+
+function isNaNUnionDef(
+  def: ZodTypeDef
+): def is ZodUnionDef<[ZodNumber, ZodNaN]> {
+  return (
+    isUnionDef(def) &&
+    (def.options[0] instanceof ZodNumber ||
+      def.options[0] instanceof ZodOptional) &&
+    def.options[1] instanceof ZodNaN
+  )
+}
+
+function isOptionalDef(def: ZodTypeDef): def is ZodOptionalDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodOptional
+}
+
+function isUnionDef(def: ZodTypeDef): def is ZodUnionDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodUnion
 }
 
 function isDateDef(def: ZodTypeDef): def is ZodDateDef {
