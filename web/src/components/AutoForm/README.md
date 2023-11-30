@@ -436,19 +436,24 @@ export default function Usage() {
 
 
 ## Required vs. optional fields
-Due to the way HTML forms work (i.e. doing nothing in an `<input>` usually results in a `""` value), some zod tweaks may be needed to properly represent required and optional fields.
-Here is a quick guide.
+Due to the way HTML forms work (i.e. doing nothing in an `<input>` usually results in a `""` value), the state of "the user has not entered anything" may get represented in unintuitive ways when stitching together `zod`, `react-hook-form` (which is what `@redwoodjs/forms` is built on), and `@hookform/resolvers`.
 
-Note: this isn't directly related to this component, but is more of a guide on how html forms, `zod`, `react-hook-form` (which is what `@redwoodjs/forms` is built on), and `@hookform/resolvers` all play together.
+The below is not directly related to the `AutoForm` component but instead is a guide for how to represent optional and required fields with the above tools.
 
 ```tsx
-const schema = z.object({
   // leaving a `<input type="number">` empty results in a `NaN`.
-  // what you choode to do with the NaN is up to you.
-  required_number: z
-    .number({ invalid_type_error: "Number is required" }),
-  optional_number: z
-    .number()
-    .or(z.nan())
+  // what you choose to do with the NaN is up to you.
+const schema = z.object({
+  required_number: z.number({ invalid_type_error: 'Number is required' }),
+  optional_number: z.number().or(z.nan()),
+});
+```
+```tsx
+  // leaving a `<input type="text">` empty results in a `""`.
+  // use the length checks to eliminate empty strings.
+  // what you choose to do with the empty string is up to you.
+const schema = z.object({
+  required_string: z.string().min(1, 'String is required'),
+  optional_string: z.string(),
 });
 ```

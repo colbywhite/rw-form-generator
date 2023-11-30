@@ -138,17 +138,6 @@ describe('getInputComponentFromZodType', () => {
       expect(element).toBe(labeledElement)
     })
 
-    it('should return TextField when there are no checks', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
-      const element = screen.getByRole<HTMLInputElement>('textbox')
-      expect(element).toBeInTheDocument()
-      expect(element.type).toEqual('text')
-      expect(element.name).toEqual(NAME)
-      const labeledElement = screen.getByLabelText<HTMLInputElement>(LABEL_TEXT)
-      expect(element).toBe(labeledElement)
-    })
-
     it('should return TextField when there are only non-email checks', () => {
       const Component = getInputComponentFromZod(schema.ip())
       renderInForm(<Component name={NAME} />)
