@@ -11,9 +11,11 @@ import type {
   ZodUnionDef,
 } from 'zod'
 import {
+  ZodArray,
   ZodDate,
   ZodEnum,
   ZodFirstPartyTypeKind,
+  ZodLiteral,
   ZodNaN,
   ZodNumber,
   ZodOptional,
@@ -33,6 +35,22 @@ export function isOptionalNumberDef(
   def: ZodTypeDef
 ): def is ZodOptionalDef<ZodNumber> {
   return isOptionalDef(def) && def.innerType instanceof ZodNumber
+}
+
+/**
+ *  z.enum(options).array().or(z.literal(false))
+ */
+export function isArrayOfEnumsAndLiteralUnionDef<
+  A extends [string, ...string[]],
+  L
+>(def: ZodTypeDef): def is ZodUnionDef<[ZodArray<ZodEnum<A>>, ZodLiteral<L>]> {
+  return (
+    isUnionDef(def) &&
+    def.options[0] instanceof ZodArray &&
+    isArrayDef(def.options[0]._def) &&
+    isEnumDef(def.options[0]._def.type._def) &&
+    def.options[1] instanceof ZodLiteral
+  )
 }
 
 /**
@@ -71,6 +89,12 @@ export function isEnumDef(def: ZodTypeDef): def is ZodEnumDef {
 
 export function isArrayDef(def: ZodTypeDef): def is ZodArrayDef {
   return getDefType(def) === ZodFirstPartyTypeKind.ZodArray
+}
+
+export function isArrayOfEnumsDef<T extends [string, ...string[]]>(
+  def: ZodTypeDef
+): def is ZodArrayDef<ZodEnum<T>> {
+  return isArrayDef(def) && isEnumDef(def.type._def)
 }
 
 export function isStringDef(def: ZodTypeDef): def is ZodStringDef {

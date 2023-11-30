@@ -58,17 +58,10 @@ describe('getInputComponentFromZodType', () => {
 
   describe('when given ZodArray', () => {
     const options = ['bar', 'baz', 'qux'] as const
-    const schema = z.enum(options).array()
-
-    it('should throw error on arbitrary arrays', () => {
-      expect(() => getInputComponentFromZod(z.string().array())).toThrow(
-        'ZodArray not yet supported'
-      )
-    })
-
-    it('should return CheckboxField when it is an array of an enum', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectCheckboxField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const optionElements = screen.getAllByRole<HTMLInputElement>('checkbox')
       expect(optionElements.length).toEqual(options.length)
       options.forEach((option, index) => {
@@ -82,6 +75,24 @@ describe('getInputComponentFromZodType', () => {
         )
         expect(element).toBe(labeledElement)
       })
+    }
+
+    it('should throw error on arbitrary arrays', () => {
+      expect(() => getInputComponentFromZod(z.string().array())).toThrow(
+        'ZodArray not yet supported'
+      )
+    })
+
+    it('should return CheckboxField when it is an array of enums', () => {
+      const Component = getInputComponentFromZod(z.enum(options).array())
+      expectCheckboxField(Component)
+    })
+
+    it('should return CheckboxField when it is an array of enums or a `false`', () => {
+      const Component = getInputComponentFromZod(
+        z.enum(options).array().or(z.literal(false))
+      )
+      expectCheckboxField(Component)
     })
   })
 

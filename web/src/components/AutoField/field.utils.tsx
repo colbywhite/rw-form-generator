@@ -88,10 +88,12 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
       </>
     )
   } else if (
-    zodUtils.isArrayDef(type._def) &&
-    zodUtils.isEnumDef(type._def.type._def)
+    zodUtils.isArrayOfEnumsDef(type._def) ||
+    zodUtils.isArrayOfEnumsAndLiteralUnionDef(type._def)
   ) {
-    const { values } = type._def.type._def
+    const [values, required] = zodUtils.isArrayOfEnumsDef(type._def)
+      ? [type._def.type._def.values, true]
+      : [type._def.options[0]._def.type._def.values, false]
     return ({
       name,
       ...props
@@ -100,7 +102,12 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
       <>
         {values.map((value, index) => (
           <Label name={value} key={index}>
-            <CheckboxField name={name} value={value} {...props} />
+            <CheckboxField
+              name={name}
+              value={value}
+              validation={{ required }}
+              {...props}
+            />
           </Label>
         ))}
       </>
