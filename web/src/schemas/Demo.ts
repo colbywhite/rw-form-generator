@@ -16,6 +16,5 @@ export const DemoSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   ice_cream_flavor: z.enum(ICE_CREAM_FLAVORS, {
     errorMap: () => ({ message: 'Choose a valid flavor' }),
-    invalid_type_error: 'Checkbox selection required',
   }),
 })
