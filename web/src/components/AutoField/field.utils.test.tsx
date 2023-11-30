@@ -26,11 +26,10 @@ const LABEL_TEXT = titleCase(NAME)
 describe('getInputComponentFromZodType', () => {
   describe('when given ZodEnum', () => {
     const options = ['bar', 'baz', 'qux'] as const
-    const schema = z.enum(options)
-
-    it('should return RadioField', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectRadioField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const optionElements = screen.getAllByRole<HTMLInputElement>('radio')
       expect(optionElements.length).toEqual(options.length)
       options.forEach((option, index) => {
@@ -44,22 +43,25 @@ describe('getInputComponentFromZodType', () => {
         )
         expect(element).toBe(labeledElement)
       })
+    }
+
+    it('should return RadioField', () => {
+      const Component = getInputComponentFromZod(z.enum(options))
+      expectRadioField(Component)
+    })
+
+    it('should return RadioField when nullable', () => {
+      const Component = getInputComponentFromZod(z.enum(options).nullable())
+      expectRadioField(Component)
     })
   })
 
   describe('when given ZodArray', () => {
     const options = ['bar', 'baz', 'qux'] as const
-    const schema = z.enum(options).array()
-
-    it('should throw error on arbitrary arrays', () => {
-      expect(() => getInputComponentFromZod(z.string().array())).toThrow(
-        'ZodArray not yet supported'
-      )
-    })
-
-    it('should return CheckboxField when it is an array of an enum', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectCheckboxField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const optionElements = screen.getAllByRole<HTMLInputElement>('checkbox')
       expect(optionElements.length).toEqual(options.length)
       options.forEach((option, index) => {
@@ -73,34 +75,81 @@ describe('getInputComponentFromZodType', () => {
         )
         expect(element).toBe(labeledElement)
       })
+    }
+
+    it('should throw error on arbitrary arrays', () => {
+      expect(() => getInputComponentFromZod(z.string().array())).toThrow(
+        'ZodArray not yet supported'
+      )
+    })
+
+    it('should return CheckboxField when it is an array of enums', () => {
+      const Component = getInputComponentFromZod(z.enum(options).array())
+      expectCheckboxField(Component)
+    })
+
+    it('should return CheckboxField when it is an array of enums or a `false`', () => {
+      const Component = getInputComponentFromZod(
+        z.enum(options).array().or(z.literal(false))
+      )
+      expectCheckboxField(Component)
     })
   })
 
   describe('when given ZodNumber', () => {
-    const schema = z.number()
-
-    it('should return NumberField', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectNumberField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const element = screen.getByRole<HTMLInputElement>('spinbutton')
       expect(element).toBeInTheDocument()
       expect(element.type).toEqual('number')
       expect(element.name).toEqual(NAME)
       const labeledElement = screen.getByLabelText<HTMLInputElement>(LABEL_TEXT)
       expect(element).toBe(labeledElement)
+    }
+
+    describe('that is required', () => {
+      it('should return NumberField', () => {
+        const Component = getInputComponentFromZod(z.number())
+        expectNumberField(Component)
+      })
+    })
+
+    describe('that is optional', () => {
+      it('should return NumberField', () => {
+        const Component = getInputComponentFromZod(z.number().optional())
+        expectNumberField(Component)
+      })
+    })
+
+    describe('that accepts NaN', () => {
+      it('should return NumberField', () => {
+        const Component = getInputComponentFromZod(z.number().or(z.nan()))
+        expectNumberField(Component)
+      })
     })
   })
 
   describe('when given ZodDate', () => {
-    const schema = z.date()
-
-    it('should return DateField', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectDateField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const element = screen.getByLabelText<HTMLInputElement>(titleCase(NAME))
       expect(element).toBeInTheDocument()
       expect(element.type).toEqual('date')
       expect(element.name).toEqual(NAME)
+    }
+
+    it('should return DateField', () => {
+      const Component = getInputComponentFromZod(z.date())
+      expectDateField(Component)
+    })
+
+    it('should return DateField when nullable', () => {
+      const Component = getInputComponentFromZod(z.date().nullable())
+      expectDateField(Component)
     })
   })
 

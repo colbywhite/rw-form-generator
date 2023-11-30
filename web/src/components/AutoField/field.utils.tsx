@@ -1,20 +1,11 @@
 import {
-  type FC,
   type ComponentProps,
+  type FC,
   forwardRef,
   type RefAttributes,
 } from 'react'
 
-import type {
-  ZodArrayDef,
-  ZodDateDef,
-  ZodEnumDef,
-  ZodNumberDef,
-  ZodStringDef,
-  ZodTypeAny,
-  ZodTypeDef,
-} from 'zod'
-import { ZodFirstPartyTypeKind } from 'zod'
+import type { ZodTypeAny, ZodTypeDef } from 'zod'
 
 import {
   CheckboxField,
@@ -30,52 +21,79 @@ import {
 } from '@redwoodjs/forms'
 
 import { DefaultLabel } from 'src/components/AutoField/labeled-inputs'
+import * as zodUtils from 'src/components/AutoField/zod.utils'
 
 export function getInputComponentFromZod<T extends ZodTypeAny>(
   type: T,
   Label = DefaultLabel
 ) {
-  if (isStringDef(type._def)) {
-    const emailCheck = type._def.checks.find(({ kind }) => kind === 'email')
-    const urlCheck = type._def.checks.find(({ kind }) => kind === 'url')
-    const StringComponent = emailCheck
-      ? EmailField
-      : urlCheck
-      ? UrlField
-      : TextField
+  if (zodUtils.isStringDef(type._def)) {
+    const isEmail = zodUtils.containsCheck(type._def, 'email')
+    const isUrl = zodUtils.containsCheck(type._def, 'url')
+    const StringComponent = isEmail ? EmailField : isUrl ? UrlField : TextField
     return ({ name, ...props }: ComponentProps<typeof TextField>) => (
       <Label name={name}>
         <StringComponent name={name} {...props} />
       </Label>
     )
-  } else if (isDateDef(type._def)) {
+  } else if (
+    zodUtils.isDateDef(type._def) ||
+    zodUtils.isNullableDateDef(type._def)
+  ) {
     return ({ name, ...props }: ComponentProps<typeof DateField>) => (
       <Label name={name}>
-        <DateField name={name} {...props} />
+        <DateField
+          name={name}
+          validation={{ required: !zodUtils.isNullableDateDef(type._def) }}
+          {...props}
+        />
       </Label>
     )
-  } else if (isNumberDef(type._def)) {
+  } else if (isRequiredNumber(type._def) || isOptionalNumber(type._def)) {
     return ({ name, ...props }: ComponentProps<typeof NumberField>) => (
       <Label name={name}>
-        <NumberField name={name} {...props} />
+        <NumberField
+          name={name}
+          validation={{
+            valueAsNumber: true,
+            required: !isOptionalNumber(type._def),
+          }}
+          {...props}
+        />
       </Label>
     )
-  } else if (isEnumDef(type._def)) {
+  } else if (
+    zodUtils.isEnumDef(type._def) ||
+    zodUtils.isNullableEnumDef(type._def)
+  ) {
+    const [values, required] = zodUtils.isEnumDef(type._def)
+      ? [type._def.values, true]
+      : [type._def.innerType._def.values, false]
     return ({
       name,
       ...props
     }: Omit<ComponentProps<typeof RadioField>, 'ref' | 'value'> &
       RefAttributes<HTMLInputElement>) => (
       <>
-        {type._def.values.map((value, index) => (
+        {values.map((value, index) => (
           <Label name={value} key={index}>
-            <RadioField name={name} value={value} {...props} />
+            <RadioField
+              name={name}
+              value={value}
+              validation={{ required }}
+              {...props}
+            />
           </Label>
         ))}
       </>
     )
-  } else if (isArrayDef(type._def) && isEnumDef(type._def.type._def)) {
-    const { values } = type._def.type._def
+  } else if (
+    zodUtils.isArrayOfEnumsDef(type._def) ||
+    zodUtils.isArrayOfEnumsAndLiteralUnionDef(type._def)
+  ) {
+    const [values, required] = zodUtils.isArrayOfEnumsDef(type._def)
+      ? [type._def.type._def.values, true]
+      : [type._def.options[0]._def.type._def.values, false]
     return ({
       name,
       ...props
@@ -84,41 +102,33 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
       <>
         {values.map((value, index) => (
           <Label name={value} key={index}>
-            <CheckboxField name={name} value={value} {...props} />
+            <CheckboxField
+              name={name}
+              value={value}
+              validation={{ required }}
+              {...props}
+            />
           </Label>
         ))}
       </>
     )
   }
 
-  throw new Error(`zod schema of ${getDefType(type._def)} not yet supported`)
+  throw new Error(
+    `zod schema of ${zodUtils.getDefType(type._def)} not yet supported`
+  )
 }
 
-function isDateDef(def: ZodTypeDef): def is ZodDateDef {
-  return getDefType(def) === ZodFirstPartyTypeKind.ZodDate
+function isRequiredNumber(def: ZodTypeDef) {
+  return zodUtils.isNumberDef(def)
 }
 
-function isNumberDef(def: ZodTypeDef): def is ZodNumberDef {
-  return getDefType(def) === ZodFirstPartyTypeKind.ZodNumber
-}
-
-function isEnumDef(def: ZodTypeDef): def is ZodEnumDef {
-  return getDefType(def) === ZodFirstPartyTypeKind.ZodEnum
-}
-
-function isArrayDef(def: ZodTypeDef): def is ZodArrayDef {
-  return getDefType(def) === ZodFirstPartyTypeKind.ZodArray
-}
-
-export function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {
-  // Every ZodTypeDef contains a typeName
-  // but the zod types don't accurately reflect that, hence the casting
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (def as any).typeName
-}
-
-function isStringDef(def: ZodTypeDef): def is ZodStringDef {
-  return getDefType(def) === ZodFirstPartyTypeKind.ZodString
+/**
+ * Optional numbers can be represented by a `.or(z.nan())` due to the way react-hook-forms and zod handle the empty string.
+ * This accounts for both cases.
+ */
+function isOptionalNumber(def: ZodTypeDef) {
+  return zodUtils.isOptionalNumberDef(def) || zodUtils.isNaNUnionDef(def)
 }
 
 export type Override = FC<InputFieldProps> | InputFieldProps['type']
