@@ -77,7 +77,7 @@ describe('getInputComponentFromZodType', () => {
   })
 
   describe('when given ZodNumber', () => {
-    function expectComponentToBeNumberField(
+    function expectNumberField(
       Comp: ReturnType<typeof getInputComponentFromZod>
     ) {
       renderInForm(<Comp name={NAME} />)
@@ -92,35 +92,44 @@ describe('getInputComponentFromZodType', () => {
     describe('that is required', () => {
       it('should return NumberField', () => {
         const Component = getInputComponentFromZod(z.number())
-        expectComponentToBeNumberField(Component)
+        expectNumberField(Component)
       })
     })
 
     describe('that is optional', () => {
       it('should return NumberField', () => {
         const Component = getInputComponentFromZod(z.number().optional())
-        expectComponentToBeNumberField(Component)
+        expectNumberField(Component)
       })
     })
 
     describe('that accepts NaN', () => {
       it('should return NumberField', () => {
         const Component = getInputComponentFromZod(z.number().or(z.nan()))
-        expectComponentToBeNumberField(Component)
+        expectNumberField(Component)
       })
     })
   })
 
   describe('when given ZodDate', () => {
-    const schema = z.date()
-
-    it('should return DateField', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectDateField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const element = screen.getByLabelText<HTMLInputElement>(titleCase(NAME))
       expect(element).toBeInTheDocument()
       expect(element.type).toEqual('date')
       expect(element.name).toEqual(NAME)
+    }
+
+    it('should return DateField', () => {
+      const Component = getInputComponentFromZod(z.date())
+      expectDateField(Component)
+    })
+
+    it('should return DateField when nullable', () => {
+      const Component = getInputComponentFromZod(z.date().nullable())
+      expectDateField(Component)
     })
   })
 

@@ -448,6 +448,7 @@ const schema = z.object({
   optional_number: z.number().or(z.nan()),
 });
 ```
+
 ```tsx
   // leaving a `<input type="text">` empty results in a `""`.
   // use the length checks to eliminate empty strings.
@@ -455,5 +456,14 @@ const schema = z.object({
 const schema = z.object({
   required_string: z.string().min(1, 'String is required'),
   optional_string: z.string(),
+});
+```
+
+```tsx
+  // leaving a `<input type="date">` empty results in a `null`.
+  // what you choose to do with the null is up to you.
+const schema = z.object({
+  required_date: z.date({ invalid_type_error: 'Date is required' }),
+  optional_date: z.date().nullable(),
 });
 ```

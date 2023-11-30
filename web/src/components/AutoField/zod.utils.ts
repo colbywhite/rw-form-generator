@@ -2,6 +2,7 @@ import type {
   ZodArrayDef,
   ZodDateDef,
   ZodEnumDef,
+  ZodNullableDef,
   ZodNumberDef,
   ZodOptionalDef,
   ZodStringCheck,
@@ -9,7 +10,13 @@ import type {
   ZodTypeDef,
   ZodUnionDef,
 } from 'zod'
-import { ZodFirstPartyTypeKind, ZodNaN, ZodNumber, ZodOptional } from 'zod'
+import {
+  ZodDate,
+  ZodFirstPartyTypeKind,
+  ZodNaN,
+  ZodNumber,
+  ZodOptional,
+} from 'zod'
 
 export function getDefType(def: ZodTypeDef): ZodFirstPartyTypeKind {
   // Every ZodTypeDef contains a typeName
@@ -67,6 +74,19 @@ export function isArrayDef(def: ZodTypeDef): def is ZodArrayDef {
 
 export function isStringDef(def: ZodTypeDef): def is ZodStringDef {
   return getDefType(def) === ZodFirstPartyTypeKind.ZodString
+}
+
+export function isNullableDef(def: ZodTypeDef): def is ZodNullableDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodNullable
+}
+
+/**
+ * z.date().nullable()
+ */
+export function isNullableDateDef(
+  def: ZodTypeDef
+): def is ZodNullableDef<ZodDate> {
+  return isNullableDef(def) && def.innerType instanceof ZodDate
 }
 
 /**

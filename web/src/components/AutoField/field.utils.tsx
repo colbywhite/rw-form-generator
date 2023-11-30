@@ -36,10 +36,17 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
         <StringComponent name={name} {...props} />
       </Label>
     )
-  } else if (zodUtils.isDateDef(type._def)) {
+  } else if (
+    zodUtils.isDateDef(type._def) ||
+    zodUtils.isNullableDateDef(type._def)
+  ) {
     return ({ name, ...props }: ComponentProps<typeof DateField>) => (
       <Label name={name}>
-        <DateField name={name} {...props} />
+        <DateField
+          name={name}
+          validation={{ required: !zodUtils.isNullableDateDef(type._def) }}
+          {...props}
+        />
       </Label>
     )
   } else if (isRequiredNumber(type._def) || isOptionalNumber(type._def)) {
