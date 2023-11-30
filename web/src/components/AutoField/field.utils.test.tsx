@@ -26,11 +26,10 @@ const LABEL_TEXT = titleCase(NAME)
 describe('getInputComponentFromZodType', () => {
   describe('when given ZodEnum', () => {
     const options = ['bar', 'baz', 'qux'] as const
-    const schema = z.enum(options)
-
-    it('should return RadioField', () => {
-      const Component = getInputComponentFromZod(schema)
-      renderInForm(<Component name={NAME} />)
+    function expectRadioField(
+      Comp: ReturnType<typeof getInputComponentFromZod>
+    ) {
+      renderInForm(<Comp name={NAME} />)
       const optionElements = screen.getAllByRole<HTMLInputElement>('radio')
       expect(optionElements.length).toEqual(options.length)
       options.forEach((option, index) => {
@@ -44,6 +43,16 @@ describe('getInputComponentFromZodType', () => {
         )
         expect(element).toBe(labeledElement)
       })
+    }
+
+    it('should return RadioField', () => {
+      const Component = getInputComponentFromZod(z.enum(options))
+      expectRadioField(Component)
+    })
+
+    it('should return RadioField when nullable', () => {
+      const Component = getInputComponentFromZod(z.enum(options).nullable())
+      expectRadioField(Component)
     })
   })
 

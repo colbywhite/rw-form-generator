@@ -442,7 +442,7 @@ The below is not directly related to the `AutoForm` component but instead is a g
 
 ```tsx
   // leaving a `<input type="number">` empty results in a `NaN`.
-  // what you choose to do with the NaN is up to you.
+  // what you choose to do with the `NaN` is up to you.
 const schema = z.object({
   required_number: z.number({ invalid_type_error: 'Number is required' }),
   optional_number: z.number().or(z.nan()),
@@ -461,9 +461,20 @@ const schema = z.object({
 
 ```tsx
   // leaving a `<input type="date">` empty results in a `null`.
-  // what you choose to do with the null is up to you.
+  // what you choose to do with the `null` is up to you.
 const schema = z.object({
   required_date: z.date({ invalid_type_error: 'Date is required' }),
   optional_date: z.date().nullable(),
+});
+```
+
+```tsx
+  // leaving a `<input type="radio">` empty results in a `null`.
+  // what you choose to do with the `null` is up to you.
+const schema = z.object({
+  required_radio: z.enum(options, {
+    invalid_type_error: 'Radio is required',
+  }),
+  optional_radio: z.enum(options).nullable(),
 });
 ```

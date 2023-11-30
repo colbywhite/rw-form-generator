@@ -62,16 +62,27 @@ export function getInputComponentFromZod<T extends ZodTypeAny>(
         />
       </Label>
     )
-  } else if (zodUtils.isEnumDef(type._def)) {
+  } else if (
+    zodUtils.isEnumDef(type._def) ||
+    zodUtils.isNullableEnumDef(type._def)
+  ) {
+    const [values, required] = zodUtils.isEnumDef(type._def)
+      ? [type._def.values, true]
+      : [type._def.innerType._def.values, false]
     return ({
       name,
       ...props
     }: Omit<ComponentProps<typeof RadioField>, 'ref' | 'value'> &
       RefAttributes<HTMLInputElement>) => (
       <>
-        {type._def.values.map((value, index) => (
+        {values.map((value, index) => (
           <Label name={value} key={index}>
-            <RadioField name={name} value={value} {...props} />
+            <RadioField
+              name={name}
+              value={value}
+              validation={{ required }}
+              {...props}
+            />
           </Label>
         ))}
       </>

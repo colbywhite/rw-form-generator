@@ -12,6 +12,7 @@ import type {
 } from 'zod'
 import {
   ZodDate,
+  ZodEnum,
   ZodFirstPartyTypeKind,
   ZodNaN,
   ZodNumber,
@@ -87,6 +88,15 @@ export function isNullableDateDef(
   def: ZodTypeDef
 ): def is ZodNullableDef<ZodDate> {
   return isNullableDef(def) && def.innerType instanceof ZodDate
+}
+
+/**
+ * z.enum(options).nullable()
+ */
+export function isNullableEnumDef<T extends [string, ...string[]]>(
+  def: ZodTypeDef
+): def is ZodNullableDef<ZodEnum<T>> {
+  return isNullableDef(def) && def.innerType instanceof ZodEnum
 }
 
 /**
