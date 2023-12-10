@@ -4,6 +4,7 @@ import type {
   ZodEnumDef,
   ZodNullableDef,
   ZodNumberDef,
+  ZodObjectDef,
   ZodOptionalDef,
   ZodStringCheck,
   ZodStringDef,
@@ -103,6 +104,9 @@ export function isStringDef(def: ZodTypeDef): def is ZodStringDef {
 
 export function isNullableDef(def: ZodTypeDef): def is ZodNullableDef {
   return getDefType(def) === ZodFirstPartyTypeKind.ZodNullable
+}
+export function isObjectDef(def: ZodTypeDef): def is ZodObjectDef {
+  return getDefType(def) === ZodFirstPartyTypeKind.ZodObject
 }
 
 /**

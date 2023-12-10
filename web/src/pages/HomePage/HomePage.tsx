@@ -10,7 +10,7 @@ const HomePage = () => {
       <MetaTags title="AutoForm demo" description="AutoForm demo" />
       <RedwoodSplashLayout>
         <section className="flex flex-col-reverse gap-16 md:flex-row">
-          <section className="text-center md:max-h-[60vh] md:overflow-auto">
+          <section className="text-center">
             <AutoFormDemo />
           </section>
           <section className="max-w-md text-sm leading-loose">

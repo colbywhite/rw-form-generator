@@ -91,7 +91,7 @@ const AutoForm = <
           errorClassName={fieldErrorClassName}
           Label={Label}
           FieldWrapper={FieldWrapper}
-          {...(FieldError ? { FieldError: FieldError(key) } : {})}
+          FieldError={FieldError}
           {...(overrides[key] ? { override: overrides[key] } : {})}
         />
       ))}
