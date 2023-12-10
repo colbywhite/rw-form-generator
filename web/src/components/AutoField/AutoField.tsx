@@ -1,7 +1,7 @@
-import type { FC, PropsWithChildren, ReactNode } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 
-import type { ZodTypeAny } from 'zod'
+import type { ZodType } from 'zod'
 
 import {
   FieldError as RedwoodFieldError,
@@ -9,9 +9,11 @@ import {
 } from '@redwoodjs/forms'
 
 import type { DefaultLabel } from 'src/components/AutoField/labeled-inputs'
+import { isObjectDef } from 'src/components/AutoField/zod.utils'
 
 import {
   getInputComponentFromZod,
+  getInputFieldsetFromZod,
   getOverrideComponent,
   Override,
 } from './field.utils'
@@ -21,35 +23,37 @@ import {
  * TODO: this should likely start with FieldProps from @redwoodjs/forms
  *  to pick up HTMLTextAreaElement & HTMLSelectElement, but it's not exported
  */
-type AutoFieldInputProps = Omit<
+export type AutoFieldInputProps = Omit<
   InputFieldProps,
   'type' | 'validation' | 'onChange' | 'onBlur' | 'form'
 >
 
-const AutoField = <T extends ZodTypeAny>({
+const AutoField = <T extends ZodType>({
   type,
   name,
   Label,
   FieldWrapper = Fragment,
-  FieldError = <RedwoodFieldError name={name} />,
+  FieldError = (name) => <RedwoodFieldError name={name} />,
   override,
   ...fieldProps
 }: {
   type: T
   Label?: typeof DefaultLabel
-  FieldError?: ReactNode
+  FieldError?: FC<string>
   FieldWrapper?: FC<PropsWithChildren>
   override?: Override
 } & AutoFieldInputProps) => {
   // TODO is there a better way to type this?
   const InputComponent =
-    override === undefined
-      ? getInputComponentFromZod(type, Label)
-      : getOverrideComponent(override, Label)
+    override !== undefined
+      ? getOverrideComponent(override, Label)
+      : isObjectDef(type._def)
+      ? getInputFieldsetFromZod(type._def, Label, FieldWrapper, FieldError)
+      : getInputComponentFromZod(type, Label)
   return (
     <FieldWrapper>
       <InputComponent name={name} {...fieldProps} />
-      {FieldError}
+      {isObjectDef(type._def) || FieldError(name)}
     </FieldWrapper>
   )
 }

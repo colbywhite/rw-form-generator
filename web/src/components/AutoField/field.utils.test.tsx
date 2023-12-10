@@ -1,15 +1,19 @@
 import type { ReactElement } from 'react'
+import { Fragment } from 'react'
 
 import { titleCase } from 'title-case'
 import { z } from 'zod'
 
-import { Form, type InputFieldProps, SelectField } from '@redwoodjs/forms'
-import { render, screen } from '@redwoodjs/testing/web'
+import type { InputFieldProps } from '@redwoodjs/forms'
+import { FieldError, Form, SelectField } from '@redwoodjs/forms'
+import { render, screen, getByLabelText } from '@redwoodjs/testing/web'
 
 import {
   getInputComponentFromZod,
+  getInputFieldsetFromZod,
   getOverrideComponent,
 } from 'src/components/AutoField/field.utils'
+import { DefaultLabel } from 'src/components/AutoField/labeled-inputs'
 
 /**
  * Because the @redwoodjs/forms elements are wrappers around react-hook-form,
@@ -257,5 +261,37 @@ describe('getOverrideComponent', () => {
         screen.getByLabelText<HTMLSelectElement>(LABEL_TEXT)
       expect(element).toBe(labeledElement)
     })
+  })
+})
+
+describe('getInputFieldsetFromZod', () => {
+  it('should return fieldset', () => {
+    const schema = z.object({
+      first: z.string(),
+      last: z.string(),
+    })
+    const FIRST_NAME = `${NAME}.first`
+    const LAST_NAME = `${NAME}.last`
+    const Component = getInputFieldsetFromZod(
+      schema._def,
+      DefaultLabel,
+      Fragment,
+      (name) => <FieldError name={name} />
+    )
+    renderInForm(<Component name={NAME} />)
+    const fieldset = screen.getByRole<HTMLFieldSetElement>('group')
+    expect(fieldset).toBeInTheDocument()
+    const firstNameElement = getByLabelText<HTMLInputElement>(
+      fieldset,
+      FIRST_NAME
+    )
+    expect(firstNameElement.type).toEqual('text')
+    expect(firstNameElement.name).toEqual(FIRST_NAME)
+    const lastNameElement = getByLabelText<HTMLInputElement>(
+      fieldset,
+      LAST_NAME
+    )
+    expect(lastNameElement.type).toEqual('text')
+    expect(lastNameElement.name).toEqual(LAST_NAME)
   })
 })

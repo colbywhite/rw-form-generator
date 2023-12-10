@@ -2,10 +2,11 @@ import {
   type ComponentProps,
   type FC,
   forwardRef,
+  type PropsWithChildren,
   type RefAttributes,
 } from 'react'
 
-import type { ZodTypeAny, ZodTypeDef } from 'zod'
+import type { ZodObjectDef, ZodTypeAny, ZodTypeDef } from 'zod'
 
 import {
   CheckboxField,
@@ -20,8 +21,30 @@ import {
   UrlField,
 } from '@redwoodjs/forms'
 
+import type { AutoFieldInputProps } from 'src/components/AutoField/AutoField'
+import AutoFieldSet from 'src/components/AutoField/AutoFieldSet'
 import { DefaultLabel } from 'src/components/AutoField/labeled-inputs'
 import * as zodUtils from 'src/components/AutoField/zod.utils'
+
+export function getInputFieldsetFromZod(
+  def: ZodObjectDef,
+  Label: typeof DefaultLabel,
+  FieldWrapper: FC<PropsWithChildren>,
+  FieldError: FC<string>
+) {
+  return ({ name: prefix, ...props }: AutoFieldInputProps) => {
+    return (
+      <AutoFieldSet
+        shape={def.shape()}
+        prefix={prefix}
+        Label={Label}
+        FieldWrapper={FieldWrapper}
+        FieldError={FieldError}
+        {...props}
+      />
+    )
+  }
+}
 
 export function getInputComponentFromZod<T extends ZodTypeAny>(
   type: T,

@@ -9,6 +9,13 @@ import AutoForm from 'src/components/AutoForm/AutoForm'
 import DataListInputField from 'src/components/DataListInputField/DataListInputField'
 import { DemoSchema, ICE_CREAM_FLAVORS } from 'src/schemas'
 
+function nameToLabel(name: string) {
+  const rawLabel = name.includes('.')
+    ? name.split('.').reverse().join(' ')
+    : name
+  return titleCase(rawLabel.split(/_/).join(' '))
+}
+
 export default function AutoFormDemo() {
   const [loading, setLoading] = useState(false)
   const submitEntity = <T,>(result: T) => {
@@ -35,9 +42,7 @@ export default function AutoFormDemo() {
         schema={DemoSchema}
         Label={({ name, children }) => (
           <label className="label">
-            <span className="label-text mr-2 w-32">
-              {titleCase(name.split('_').join(' '))}
-            </span>
+            <span className="label-text mr-2 w-32">{nameToLabel(name)}</span>
             {children}
           </label>
         )}
