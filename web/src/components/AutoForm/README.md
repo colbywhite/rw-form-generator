@@ -434,7 +434,6 @@ export default function Usage() {
 }
 ```
 
-
 ## Required vs. optional fields
 Due to the way HTML forms work (i.e. doing nothing in an `<input>` usually results in a `""` value), the state of "the user has not entered anything" may get represented in unintuitive ways when stitching together `zod`, `react-hook-form` (which is what `@redwoodjs/forms` is built on), and `@hookform/resolvers`.
 
@@ -492,4 +491,42 @@ const schema = z.object({
     .nonempty('Checkbox selection required'),
   optional_checkbox: z.enum(options).array().or(z.literal(false)),
 });
+```
+
+
+## Object fields
+
+```tsx
+const schema = z.object({
+  name: z.object({
+    first: z.string().min(1, 'First name is required'),
+    last: z.string().min(1, 'Last name is required'),
+  })
+})
+
+/**
+ * Results in the following DOM
+ * <form aria-label="Object field usage">
+ *   <fieldset>
+ *     <label>
+ *       name.first
+ *       <input id="name.first" type="text" name="name.first" />
+ *     </label>
+ *     <label>
+ *       name.last
+ *       <input id="name.last" type="text" name="name.last" />
+ *     </label>
+ *   </fieldset>
+ * </form>
+ */
+export default function Usage() {
+  const onSubmit = (result) => console.log("Submitted", result);
+  return (
+    <AutoForm
+      aria-label="Object field usage"
+      schema={schema}
+      onSubmit={onSubmit}>
+    </AutoForm>
+  );
+}
 ```
