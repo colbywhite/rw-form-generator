@@ -1,31 +1,30 @@
 /**
  * START --- SETUP TAILWINDCSS EDIT
  *
- * `yarn rw setup ui tailwindcss` placed these imports here
+ * `yarn rw setup ui tailwindcss` placed these directives here
  * to inject Tailwind's styles into your CSS.
- * For more information, see: https://tailwindcss.com/docs/installation#include-tailwind-in-your-css
+ * For more information, see: https://tailwindcss.com/docs/installation
  */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-@layer base {
-  a {
-    @apply text-primary underline
-  }
-
-  a:hover {
-    @apply text-secondary
-  }
-
-  code {
-    color: rgb(220, 94, 56);
-    background-color: rgba(220, 94, 56, 0.2);
-    font-size: inherit;
-    @apply rounded p-1 font-mono
-  }
-}
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /**
  * END --- SETUP TAILWINDCSS EDIT
  */
+
+@layer base {
+    a {
+        @apply text-primary underline
+    }
+
+    a:hover {
+        @apply text-secondary
+    }
+
+    code {
+        color: rgb(220, 94, 56);
+        background-color: rgba(220, 94, 56, 0.2);
+        font-size: inherit;
+        @apply rounded p-1 font-mono
+    }
+}

@@ -1,35 +1,36 @@
 {
   "name": "web",
-  "version": "0.0.0",
   "private": true,
   "browserslist": {
     "development": [
       "last 1 version"
     ],
     "production": [
-      "defaults",
-      "not IE 11",
-      "not IE_Mob 11"
+      "defaults"
     ]
   },
+  "scripts": {
+    "start": "rw dev web --no-generate"
+  },
   "dependencies": {
-    "@hookform/resolvers": "^3.1.1",
-    "@redwoodjs/forms": "6.5.1",
-    "@redwoodjs/router": "6.5.1",
-    "@redwoodjs/web": "6.5.1",
-    "@tailwindcss/typography": "^0.5.9",
-    "daisyui": "3.0.6",
+    "@redwoodjs/forms": "6.6.0",
+    "@redwoodjs/router": "6.6.0",
+    "@redwoodjs/web": "6.6.0",
+    "@tailwindcss/typography": "^0.5.10",
+    "daisyui": "^4.4.23",
     "prop-types": "15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwind-merge": "^2.0.0"
+    "tailwind-merge": "^2.2.0"
   },
   "devDependencies": {
-    "@redwoodjs/vite": "6.5.1",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "postcss-loader": "^7.3.2",
-    "tailwindcss": "^3.3.2",
-    "zod-to-json-schema": "^3.21.4"
+    "@redwoodjs/vite": "6.6.0",
+    "@types/react": "18.2.37",
+    "@types/react-dom": "18.2.15",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "postcss-loader": "^7.3.3",
+    "tailwindcss": "^3.4.0",
+    "vite": "4.5.1"
   }
 }

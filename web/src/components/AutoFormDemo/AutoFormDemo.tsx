@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
+import { AutoForm } from '@colbyw/autoform'
 import { titleCase } from 'title-case'
 
 import { FieldError, Submit } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/toast'
 
-import AutoForm from 'src/components/AutoForm/AutoForm'
 import DataListInputField from 'src/components/DataListInputField/DataListInputField'
 import { DemoSchema, ICE_CREAM_FLAVORS } from 'src/schemas'
 
