@@ -1,7 +1,5 @@
 # @colbyw/autoform
 
-demo: https://githubbox.com/colbywhite/rw-form-generator
-
 This is a demo of creating a form via the proposed `AutoForm` component.
 This component takes in a `zod` schema and generates a functional form for you.
 
@@ -16,6 +14,7 @@ Then fill out this [survey](https://forms.gle/Vrb9UWqb6JR8Jx9T8) to give feedbac
 
 # Relevant links
 
+- [CodeSandbox demo](https://githubbox.com/colbywhite/rw-form-generator)
 - [Feedback survey](https://forms.gle/Vrb9UWqb6JR8Jx9T8)
 - [Form Generator project](https://www.notion.so/redwoodjs/Form-Generator-113ccba4a6614fc3b4c3dc62c31edd05?pvs=4) in Redwood's Notion
 - [Original proposal](https://docs.google.com/document/d/1-2yYdznb79srxnZ5S7jsJx2eS0rrLpqyRfPWRk-T_3w/edit#) from @mdkess
