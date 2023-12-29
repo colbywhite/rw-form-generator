@@ -1,0 +1,73 @@
+{
+  "name": "@colbyw/autoform",
+  "type": "module",
+  "version": "0.0.0-development",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colbywhite/rw-form-generator.git",
+    "directory": "lib/autoform"
+  },
+  "homepage": "https://redwood-autoform.netlify.app",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "lint:fix": "eslint --fix ./src vite.config.mts",
+    "lint": "eslint ./src vite.config.mts",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "semantic-release": "semantic-release"
+  },
+  "release": {
+    "branches": [
+      {
+        "name": "main",
+        "channel": "rc",
+        "prerelease": "rc"
+      },
+      "prod"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "3.3.2",
+    "@redwoodjs/forms": "6.5.1",
+    "title-case": "^4.2.0",
+    "zod": "3.22.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^9.3.3",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/eslint": "^8.56.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^43.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "globals": "^13.24.0",
+    "graphql": "^16.8.1",
+    "jsdom": "^23.0.1",
+    "react": "18.2.0",
+    "react-dom": "^18.2.0",
+    "semantic-release": "^22.0.12",
+    "typescript": "*",
+    "vite": "^5.0.10",
+    "vitest": "^1.1.0"
+  },
+  "peerDependencies": {
+    "react": "18.2.0"
+  }
+}
