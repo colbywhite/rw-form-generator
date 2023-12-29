@@ -160,17 +160,13 @@ export type Override = FC<InputFieldProps> | InputFieldProps['type']
 // | 'textarea'
 
 export function getOverrideComponent(override: Override, Label = DefaultLabel) {
-  if (typeof override === 'function') {
-    return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
-      (props, ref) => {
+  return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
+    (props, ref) => {
+      if (typeof override === 'function') {
         return (
           <Label name={props.name}>{override({ ...props, ref })}</Label>
         )
       }
-    )
-  }
-  return forwardRef<HTMLInputElement, Omit<InputFieldProps, 'type'>>(
-    (props, ref) => {
       return (
         <Label name={props.name}>
           <InputField ref={ref} type={override} {...props} />
