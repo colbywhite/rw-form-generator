@@ -13,7 +13,7 @@ function test {
 }
 
 function build_lib {
-    yarn workspace @colbyw/autoform build
+    NODE_ENV=production yarn workspace @colbyw/autoform build
 }
 
 function build_docs {

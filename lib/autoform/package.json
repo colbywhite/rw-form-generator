@@ -7,6 +7,7 @@
     "url": "https://github.com/colbywhite/rw-form-generator.git",
     "directory": "lib/autoform"
   },
+  "homepage": "https://redwood-autoform.netlify.app",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +17,6 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist",
-    "prepublishOnly": "NODE_ENV=production yarn build",
     "lint:fix": "eslint --fix ./src vite.config.mts",
     "lint": "eslint ./src vite.config.mts",
     "test": "vitest --run",
@@ -32,6 +32,9 @@
       },
       "prod"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@hookform/resolvers": "3.3.2",
