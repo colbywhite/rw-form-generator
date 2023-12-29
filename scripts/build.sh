@@ -56,6 +56,9 @@ run_parallel "lint" "test"
 echo "🔨 building"
 run_parallel "build_docs" "build_lib"
 echo "🔨 releasing"
+git tag --list
+git tag --contains main
+git show v1.0.0-rc.1 -q
 release
 echo "✅ done"
 
