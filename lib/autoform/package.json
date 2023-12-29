@@ -1,5 +1,6 @@
 {
   "name": "@colbyw/autoform",
+  "description": "A React component generates a functional form based on a given zod schema.",
   "type": "module",
   "version": "0.0.0-development",
   "repository": {
