@@ -1,0 +1,17 @@
+{
+  "$schema": "https://codesandbox.io/schemas/tasks.json",
+  "setupTasks": [
+    "corepack enable",
+    "yarn install"
+  ],
+  "tasks": {
+    "dev": {
+      "name": "yarn rw dev",
+      "command": "yarn workspace web start --fwd=\"--allowed-hosts all\"",
+      "runAtStart": true,
+      "preview": {
+        "port": 8910
+      }
+    }
+  }
+}
