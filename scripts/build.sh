@@ -56,6 +56,8 @@ run_parallel "lint" "test"
 echo "🔨 building"
 run_parallel "build_docs" "build_lib"
 echo "🔨 releasing"
+echo 'git fetch --tags'
+git fetch --tags
 echo 'git tag --list'
 git tag --list
 echo 'git tag --contains main'
