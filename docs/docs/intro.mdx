@@ -1,0 +1,87 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+`@colbyw/autoform`
+
+![npm (scoped with tag)](https://img.shields.io/npm/v/%40colbyw/autoform/rc?logo=npm)
+![Netlify](https://img.shields.io/netlify/8384846f-9e3e-42ec-9a8f-a490c8187d72?logo=netlify)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40colbyw/autoform)
+
+The `AutoForm` component takes in a [zod] schema and generates a functional form for you so you never have to deal with a `input` tag again.
+
+```tsx
+const MyForm = () => {
+  const schema = z.object({
+    email: z
+      .string({ required_error: 'Email address is required' })
+      .min(1, 'Email address is required')
+      .email('Please enter a valid email address'),
+    name: z
+      .string({ required_error: 'Name is required' })
+      .min(1, 'Name is required')
+  })
+
+  const onSubmit = (result: { email: string; name: string }) =>
+    console.log('Submitted', result)
+  return (
+    <AutoForm aria-label="Basic usage" schema={schema} onSubmit={onSubmit}>
+      <Submit>Submit form</Submit>
+    </AutoForm>
+  )
+}
+```
+
+This figures out the expected HTML based upon the [zod] validation, meaning you don't have to figure it out yourself.
+Simply define your data structure using a schema, and `AutoForm` takes care of the rest, rendering a fully operational form based on your schema.
+
+## Dependencies
+
+The implementation of `AutoForm` is intended to be glue between [zod] and [react-hook-form], the package that drives [Redwood's form tools](https://redwoodjs.com/docs/forms).
+
+## Features
+- [Styling support](./usage/styling.md)
+- [Wrapper support](./usage/wrappers.md)
+- [Error support](./usage/errors.md)
+- [Type override support](./usage/overrides/type.md)
+- [Custom component override support](./usage/overrides/componenet.md)
+- [Required/optional field support](./usage/required_fields.md)
+- [Object support](./usage/objects.md)
+
+## Demo
+
+A demo can be found on [CodeSandbox].
+Fork this codesandbox and make changes to the schema to see if you can recreate real forms you have used before.
+
+<details>
+  <summary>To view the demo in an embedded context</summary>
+<iframe src="https://codesandbox.io/p/devbox/github/colbywhite/rw-form-generator/tree/main/?file=%2Fweb%2Fsrc%2Fcomponents%2FAutoFormDemo%2FAutoFormDemo.tsx&layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clo3kfje5005k2e67xsy1bak3%2522%252C%2522sizes%2522%253A%255B100%252C0%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clo3kfje5005h2e674zuf3ufi%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clo3kfje5005j2e67lmurmgt8%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clo3kfje5005i2e6754badn5o%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%252C%2522sizes%2522%253A%255B50%252C50%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clo3kfje5005h2e674zuf3ufi%2522%253A%257B%2522id%2522%253A%2522clo3kfje5005h2e674zuf3ufi%2522%252C%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clqr8nbnt00022e669ezjy5o9%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522FILE%2522%252C%2522filepath%2522%253A%2522%252Fweb%252Fsrc%252Fcomponents%252FAutoFormDemo%252FAutoFormDemo.tsx%2522%252C%2522state%2522%253A%2522IDLE%2522%257D%255D%252C%2522activeTabId%2522%253A%2522clqr8nbnt00022e669ezjy5o9%2522%257D%252C%2522clo3kfje5005i2e6754badn5o%2522%253A%257B%2522id%2522%253A%2522clo3kfje5005i2e6754badn5o%2522%252C%2522tabs%2522%253A%255B%257B%2522type%2522%253A%2522TASK_PORT%2522%252C%2522taskId%2522%253A%2522dev%2522%252C%2522port%2522%253A8910%252C%2522id%2522%253A%2522cln7vbbw600992e65r1va8hng%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522path%2522%253A%2522%252F%2522%257D%252C%257B%2522type%2522%253A%2522PROJECT_SETUP%2522%252C%2522id%2522%253A%2522clq6zvf7p00fy2e668eqglyo6%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%255D%252C%2522activeTabId%2522%253A%2522cln7vbbw600992e65r1va8hng%2522%257D%252C%2522clo3kfje5005j2e67lmurmgt8%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522type%2522%253A%2522TASK_LOG%2522%252C%2522taskId%2522%253A%2522dev%2522%252C%2522id%2522%253A%2522cln7umuj500652e655cncwcvn%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%255D%252C%2522id%2522%253A%2522clo3kfje5005j2e67lmurmgt8%2522%252C%2522activeTabId%2522%253A%2522cln7umuj500652e655cncwcvn%2522%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Afalse%252C%2522showSidebar%2522%253Afalse%252C%2522sidebarPanelSize%2522%253A40%257D"
+style={{width:"100%", height:"500px", border:0, 'border-radius':"4px", overflow:"hidden"}}
+title="Redwood AutoForm POC"
+allow="accelerometer"
+sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+</details>
+
+
+## Installation
+
+In theory, this package will work in a regular React project, but it is intended to be used in a RedwoodJS context and depends on the [@redwoodjs/forms] package.
+
+To use in a Redwood context, install it to the web side of your project.
+
+```shell
+yarn workspace web add @colbyw/autoform@1.0.0-rc.2
+```
+
+## Usage
+
+See the [usage](./category/usage) docs for more info.
+
+
+[zod]: https://zod.dev/
+[react-hook-form]: https://react-hook-form.com/
+[@redwoodjs/forms]: https://www.npmjs.com/package/@redwoodjs/forms
+[CodeSandbox]: https://githubbox.com/colbywhite/rw-form-generator

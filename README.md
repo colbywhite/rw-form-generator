@@ -1,5 +1,9 @@
 # @colbyw/autoform
 
+![npm (scoped with tag)](https://img.shields.io/npm/v/%40colbyw/autoform/rc?logo=npm)
+![Netlify](https://img.shields.io/netlify/8384846f-9e3e-42ec-9a8f-a490c8187d72?logo=netlify)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40colbyw/autoform)
+
 This is a demo of creating a form via the proposed `AutoForm` component.
 This component takes in a `zod` schema and generates a functional form for you.
 
