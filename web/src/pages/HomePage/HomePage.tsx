@@ -57,7 +57,7 @@ const HomePage = () => {
             able to create every type of form, but that&apos;s the feedback
             we&apos;re looking for. What features are missing you would need
             to create a form? Take a look at the component&apos;s in-progress
-            doc at <code>web/src/components/AutoForm/README.md</code> to learn
+            doc at <code>lib/autoform/src/AutoForm/README.md</code> to learn
             what the component currently can (and cannot) do.
           </p>
           <p className="mb-4">

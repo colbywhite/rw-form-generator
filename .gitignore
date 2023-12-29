@@ -28,3 +28,4 @@ blog-test-project/*
 **/meta.*.json
 
 .nx/cache
+lib/autoform/README.md
