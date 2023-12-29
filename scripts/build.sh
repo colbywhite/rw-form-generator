@@ -13,7 +13,7 @@ function test {
 }
 
 function build_lib {
-    NODE_ENV=production yarn workspace @colbyw/autoform build
+    cp README.md lib/autoform/README.md && NODE_ENV=production yarn workspace @colbyw/autoform build
 }
 
 function build_docs {
