@@ -1,8 +1,12 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import { version } from '../lib/autoform/package.json'
 
 const config: Config = {
+  customFields: {
+    version
+  },
   title: 'AutoForm Docs',
   tagline: 'The AutoForm component takes in a zod schema and generates a functional form for you. Never deal with a <input> tag again.',
   favicon: 'img/favicon.ico',

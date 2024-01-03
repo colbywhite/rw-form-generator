@@ -1,23 +1,17 @@
 # @colbyw/autoform
 
-![npm (scoped with tag)](https://img.shields.io/npm/v/%40colbyw/autoform/rc?logo=npm)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/%40colbyw/autoform/rc?logo=npm&label=%40colbyw%2Fautoform%40rc)](https://www.npmjs.com/package/@colbyw/autoform/v/rc)
 ![Netlify](https://img.shields.io/netlify/8384846f-9e3e-42ec-9a8f-a490c8187d72?logo=netlify)
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40colbyw/autoform)
+![npm bundle size (scoped version)](https://img.shields.io/bundlephobia/minzip/%40colbyw/autoform/rc)
 
-This is a demo of creating a form via the proposed `AutoForm` component.
-This component takes in a `zod` schema and generates a functional form for you.
+The `AutoForm` component takes in a `zod` schema and generates a functional form for you so you never have to deal with a `input` tag again.
 
-This demo (found at `web/src/components/AutoFormDemo/AutoFormDemo.tsx`) generates a form based on a schema in `web/src/schemas/Demo.ts`.
+This figures out the expected HTML based upon the `zod` validation, meaning you don't have to figure it out yourself.
+Simply define your data structure using a schema, and `AutoForm` takes care of the rest, rendering a fully operational form based on your schema.
 
-Fork this [codesandbox](https://githubbox.com/colbywhite/rw-form-generator) and make changes to the schema and see if you can recreate real forms you have used before.
-It's not expected you'll be able to create every type of form, but that's the feedback we're looking for.
-What features are missing you would need to create a form?
-Take a look at the component's in-progress doc at `lib/autoform/src/AutoForm/README.md` to learn what the component currently can (and cannot) do.
+# Links
 
-Then fill out this [survey](https://forms.gle/Vrb9UWqb6JR8Jx9T8) to give feedback to help direct the project.
-
-# Relevant links
-
+- [Docs](https://redwood-autoform.netlify.app)
 - [CodeSandbox demo](https://githubbox.com/colbywhite/rw-form-generator)
 - [Feedback survey](https://forms.gle/Vrb9UWqb6JR8Jx9T8)
 - [Form Generator project](https://www.notion.so/redwoodjs/Form-Generator-113ccba4a6614fc3b4c3dc62c31edd05?pvs=4) in Redwood's Notion

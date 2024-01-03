@@ -6,21 +6,19 @@ sidebar_position: 1
 
 `@colbyw/autoform`
 
-![npm (scoped with tag)](https://img.shields.io/npm/v/%40colbyw/autoform/rc?logo=npm)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/%40colbyw/autoform/rc?logo=npm&label=%40colbyw%2Fautoform%40rc)](https://www.npmjs.com/package/@colbyw/autoform/v/rc)
 ![Netlify](https://img.shields.io/netlify/8384846f-9e3e-42ec-9a8f-a490c8187d72?logo=netlify)
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40colbyw/autoform)
+![npm bundle size (scoped version)](https://img.shields.io/bundlephobia/minzip/%40colbyw/autoform/rc)
 
 The `AutoForm` component takes in a [zod] schema and generates a functional form for you so you never have to deal with a `input` tag again.
 
 ```tsx
 const MyForm = () => {
   const schema = z.object({
-    email: z
-      .string({ required_error: 'Email address is required' })
+    email: z.string()
       .min(1, 'Email address is required')
       .email('Please enter a valid email address'),
-    name: z
-      .string({ required_error: 'Name is required' })
+    name: z.string()
       .min(1, 'Name is required')
   })
 
